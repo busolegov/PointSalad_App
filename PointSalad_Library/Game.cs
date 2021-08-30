@@ -6,27 +6,44 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public class Game<T> where T : Player
+    public class Game <T> where T : Player
     {
-        /*T[] players;
+        /// <summary>
+        /// Счетчик раундов.
+        /// </summary>
+        public int roundCounter = 0;
+        /// <summary>
+        /// Массив игроков.
+        /// </summary>
+        public List <T> players = new List<T>();
+
         public string Name { get; set; }
         public Game(string name)
         {
             this.Name = name;
         }
-        public void Create(AccountStateHandler AddHasTakenVegetable,
-                           AccountStateHandler AddHasTakenQuest) 
-        {
 
-            if (players == null)
-                players = new T[] { newAccount };
-            else
+        public void Create(AccountStateHandler CreatePlayerHandler,
+                           AccountStateHandler TakeVegetableHandler,
+                           AccountStateHandler TakeQuestHandler, int cp, string name) 
+        {
+            for (int i = 0; i < cp; i++)
             {
-                T[] tempAccounts = new T[accounts.Length + 1];
-                for (int i = 0; i < accounts.Length; i++)
-                    tempAccounts[i] = accounts[i];
-                tempAccounts[tempAccounts.Length - 1] = newAccount;
-                accounts = tempAccounts;
-            }*/
+                Player newPlayer = new Player();
+                newPlayer.HasCreatePlayer += CreatePlayerHandler;
+                newPlayer.HasTakenQuest += TakeQuestHandler;
+                newPlayer.HasTakenVegetable += TakeVegetableHandler;
+                players.Add((T)(newPlayer));
+            }
         }
+        public void TakeQuest(Card card, int iD)
+        {
+            players[iD-1].TakeQuest(card);
+        }
+        public void TakeVegetable(Card card, int iD) 
+        {
+            players[iD-1].TakeVegetable(card);
+        }
+    }
 }
+

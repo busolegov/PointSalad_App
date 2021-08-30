@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    interface ICards
+    class All_CabbageCards
     {
-        public void Quest(Player player);
-        
     }
 }

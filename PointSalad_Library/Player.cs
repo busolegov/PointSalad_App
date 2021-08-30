@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 namespace PointSalad_Library
 {
     public class Player : IPlayer
-    {   
+    {
+        /// <summary>
+        /// Событие, возникающее присоздании игрока.
+        /// </summary>
+        public event AccountStateHandler HasCreatePlayer;
         /// <summary>
         /// Событие, возникающее при взятии карты овоща.
         /// </summary>
@@ -21,20 +25,42 @@ namespace PointSalad_Library
         /// </summary>
         /// <param name="e"></param>
         /// <param name="handler"></param>
-        public void CallEvent(AccountEventArgs e, AccountStateHandler handler) 
+        public void CallEvent(AccountEventArgs e, AccountStateHandler handler)
         {
             if (e != null) handler?.Invoke(this, e);
 
         }
-        public virtual void OnHasTakenVegetable(AccountEventArgs e) 
+        /// <summary>
+        /// Вызов события взятия карты овоща. Виртупльный метод.
+        /// </summary>
+        /// <param name="e"></param>
+        /// 
+        public virtual void OnHasTakenVegetable(AccountEventArgs e)
         {
             CallEvent(e, HasTakenVegetable);
         }
+        /// <summary>
+        /// Вызов события взятия карты рецепты. Виртуальный метод.
+        /// </summary>
+        /// <param name="e"></param>
         public virtual void OnHasTakenQuest(AccountEventArgs e)
         {
             CallEvent(e, HasTakenQuest);
         }
-        public void TakeVegetable(Card card)
+        /// <summary>
+        /// Вызов события содания игрока. Виртуальный метод.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnCreatePlayer(AccountEventArgs e)
+        {
+            CallEvent(e, HasCreatePlayer);
+        }
+
+        /// <summary>
+        /// Метод взятия карты овоща.
+        /// </summary>
+        /// <param name="card"></param>
+        public virtual void TakeVegetable(Card card)
         {
             if (card.Type == "tomato")
             {
@@ -62,7 +88,11 @@ namespace PointSalad_Library
             }
             OnHasTakenVegetable(new AccountEventArgs("В стек овощей добавлена карта " + card.Type, card));
         }
-        public void TakeQuest(Card card)
+        /// <summary>
+        /// Метод взятия карты задания.
+        /// </summary>
+        /// <param name="card"></param>
+        public virtual void TakeQuest(Card card)
         {
             if (questStack == null)
             {
@@ -78,29 +108,34 @@ namespace PointSalad_Library
                 tempQuestStack[tempQuestStack.Length] = card;
                 questStack = tempQuestStack;
             }
-            OnHasTakenQuest(new AccountEventArgs("В стек заданий добавлена карта " + card.QuestText, card));
+            OnHasTakenQuest(new AccountEventArgs("В стек рецептов добавлена карта " + card.QuestText, card));
+        }
+
+        public int Scoring()
+        {
+            foreach (var item in questStack)
+            {
+                item.Quest();
+            }
+            return Score;
+        }
+        public Player()
+        {
+            iD = ++counter;
+            Console.WriteLine($"Создан {iD} игрок");
         }
 
         /// <summary>
-        /// Количество очков игрока.
+        /// Общее Количество очков игрока.
         /// </summary>
         public int Score { get; set; }
         /// <summary>
-        /// Имя игрока.
+        /// Номер игрока.
         /// </summary>
-        public string Name { get; set; }
-        public Player(string name)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("Имя не может быть null", nameof(name));
-            }
-            Name = name;
-        }
-        /// <summary>
-        /// Счетчик раундов.
-        /// </summary>
-        public int roundCounter = 0;
+        public int iD;
+        static int counter = 0;
+
+        #region VegetablesStacks
         /// <summary>
         /// Стек карт томатов игрока.
         /// </summary>
@@ -128,11 +163,8 @@ namespace PointSalad_Library
         /// <summary>
         /// Стек карт заданий игрока.
         /// </summary>
-        public static Card [] questStack;
-        public void ShowInfo()
-        {
-            
-        }
-                
+        #endregion
+
+        public Card[] questStack;
     }
 }
