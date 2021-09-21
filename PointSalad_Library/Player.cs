@@ -56,6 +56,11 @@ namespace PointSalad_Library
             CallEvent(e, HasCreatePlayer);
         }
 
+        public virtual void CreatePlayer() 
+        {
+            OnCreatePlayer(new AccountEventArgs($"Создан игрок {this.iD}"));        
+        }
+
         /// <summary>
         /// Метод взятия карты овоща.
         /// </summary>
@@ -86,7 +91,7 @@ namespace PointSalad_Library
             {
                 pepperStack++;
             }
-            OnHasTakenVegetable(new AccountEventArgs("В стек овощей добавлена карта " + card.Type, card));
+            OnHasTakenVegetable(new AccountEventArgs("В стек овощей добавлена карта " + card.Type + "\n--------------------", card));
         }
         /// <summary>
         /// Метод взятия карты задания.
@@ -94,23 +99,13 @@ namespace PointSalad_Library
         /// <param name="card"></param>
         public virtual void TakeQuest(Card card)
         {
-            if (questStack == null)
-            {
-                Card[] questStack = new Card[1] { card };
-            }
-            else
-            {
-                Card[] tempQuestStack = new Card[questStack.Length + 1];
-                for (int i = 0; i < tempQuestStack.Length - 1; i++)
-                {
-                    tempQuestStack[i] = questStack[i];
-                }
-                tempQuestStack[tempQuestStack.Length] = card;
-                questStack = tempQuestStack;
-            }
-            OnHasTakenQuest(new AccountEventArgs("В стек рецептов добавлена карта " + card.QuestText, card));
+            questStack.Add(card);
+            OnHasTakenQuest(new AccountEventArgs("В стек рецептов добавлена карта " + card.QuestText + "\n--------------------", card));
         }
-
+        /// <summary>
+        /// Метод подсчета очков.
+        /// </summary>
+        /// <returns></returns>
         public int Scoring()
         {
             foreach (var item in questStack)
@@ -122,7 +117,6 @@ namespace PointSalad_Library
         public Player()
         {
             iD = ++counter;
-            Console.WriteLine($"Создан {iD} игрок");
         }
 
         /// <summary>
@@ -165,6 +159,6 @@ namespace PointSalad_Library
         /// </summary>
         #endregion
 
-        public Card[] questStack;
+        public List<Card> questStack = new List<Card>();
     }
 }

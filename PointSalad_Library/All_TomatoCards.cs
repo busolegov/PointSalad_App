@@ -11,7 +11,7 @@ namespace PointSalad_Library
     /// </summary>
     public class TomatoCardEx1 : TomatoCards
     {
-        private string text = "+3pts / onion\n-2pts / pepper";
+        private string text = "+3/onion & -2/pepper";
         public override string QuestText { get => text; set => text = value; }
 
         public override void Quest(Game<Player> game, Player player)
@@ -22,7 +22,7 @@ namespace PointSalad_Library
     }
     public class TomatoCardEx2 : TomatoCards
     {
-        private string text = "+7pts / carrot + onion + pepper";
+        private string text = "+7/carrot + onion + pepper";
         public override string QuestText { get => text; set => text = value; }
 
         public override void Quest(Game<Player> game, Player player)
@@ -42,6 +42,8 @@ namespace PointSalad_Library
     }
     public class TomatoCardEx3 : TomatoCards
     {
+        private string text = "+1/onion & +1/carrot";
+        public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 5 * (player.onionStack % 2);
@@ -49,6 +51,8 @@ namespace PointSalad_Library
     }
     public class TomatoCardEx4 : TomatoCards
     {
+        private string text = "+5/2 onions";
+        public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += player.onionStack % 2;
@@ -56,8 +60,10 @@ namespace PointSalad_Library
     }
     
     public class TomatoCardEx5 : TomatoCards
+
     {
-        public new string QuestText = "+3pts / onion\n-2pts / pepper";
+        private string text = "+4/cabbage + pepper";
+        public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.onionStack;
@@ -67,7 +73,9 @@ namespace PointSalad_Library
 
     public class TomatoCardEx6 : TomatoCards
     {
-        public new string QuestText = "+3pts / onion\n-2pts / pepper";
+        private string text = "+4pts / carrot + lettuce";
+        public override string QuestText { get => text; set => text = value; }
+
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.onionStack;
@@ -75,9 +83,10 @@ namespace PointSalad_Library
         }
     }
 
-    /*public class TomatoCardEx7 : TomatoCards
+    public class TomatoCardEx7 : TomatoCards
     {
-        public new string QuestText = "+3pts / onion\n-2pts / pepper";
+        private string text = "+10pts / if max onions";
+        public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game <Player>game, Player player)
         {
             List<int> l = new List<int>();
@@ -85,10 +94,42 @@ namespace PointSalad_Library
             {
                 l.Add(item.onionStack);
             }
-            l.Max( )
+            l.Max();
         }
 
-    }*/
+    }
+
+    public class TomatoCardEx8 : TomatoCards
+    {
+        private string text = "+7pts / if min onions";
+        public override string QuestText { get => text; set => text = value; }
+        public override void Quest(Game<Player> game, Player player)
+        {
+            List<int> l = new List<int>();
+            foreach (var item in game.players)
+            {
+                l.Add(item.onionStack);
+            }
+            l.Max();
+        }
+
+    }
+
+    public class TomatoCardEx9 : TomatoCards
+    {
+        private string text = "+2pts / onion";
+        public override string QuestText { get => text; set => text = value; }
+        public override void Quest(Game<Player> game, Player player)
+        {
+            List<int> l = new List<int>();
+            foreach (var item in game.players)
+            {
+                l.Add(item.onionStack);
+            }
+            l.Max();
+        }
+
+    }
 }
 
 

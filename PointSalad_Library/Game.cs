@@ -11,38 +11,41 @@ namespace PointSalad_Library
         /// <summary>
         /// Счетчик раундов.
         /// </summary>
-        public int roundCounter = 0;
+        private static int roundCounter = 0;
         /// <summary>
         /// Массив игроков.
         /// </summary>
         public List <T> players = new List<T>();
-
+        /// <summary>
+        /// Имя игры - Новая игра
+        /// </summary>
         public string Name { get; set; }
         public Game(string name)
         {
             this.Name = name;
         }
 
-        public void Create(AccountStateHandler CreatePlayerHandler,
+        public void CreatePlayer(AccountStateHandler CreatePlayerHandler,
                            AccountStateHandler TakeVegetableHandler,
                            AccountStateHandler TakeQuestHandler, int cp, string name) 
         {
             for (int i = 0; i < cp; i++)
             {
-                Player newPlayer = new Player();
+                T newPlayer = new Player() as T;
                 newPlayer.HasCreatePlayer += CreatePlayerHandler;
                 newPlayer.HasTakenQuest += TakeQuestHandler;
                 newPlayer.HasTakenVegetable += TakeVegetableHandler;
-                players.Add((T)(newPlayer));
+                newPlayer.CreatePlayer();
+                players.Add(newPlayer);
             }
         }
         public void TakeQuest(Card card, int iD)
         {
-            players[iD-1].TakeQuest(card);
+            players[iD].TakeQuest(card);
         }
         public void TakeVegetable(Card card, int iD) 
         {
-            players[iD-1].TakeVegetable(card);
+            players[iD].TakeVegetable(card);
         }
     }
 }

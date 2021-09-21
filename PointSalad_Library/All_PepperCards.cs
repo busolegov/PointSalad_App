@@ -8,6 +8,7 @@ namespace PointSalad_Library
 {
     public class PepperCardEx1 : PepperCards
     {
+
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += player.cabbageStack;

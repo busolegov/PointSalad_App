@@ -25,11 +25,14 @@ namespace PointSalad_Library
         /// Информация о взятой карте
         /// </summary>
         public Card c;
-        public AccountEventArgs(string _mes, Card _card)
+        public AccountEventArgs(string mes, Card card)
         {
-            Message = _mes;
-            c = _card;
-
+            Message = mes;
+            c = card;
+        }
+        public AccountEventArgs(string mes)
+        {
+            Message = mes;
         }
     }
     
