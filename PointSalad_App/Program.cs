@@ -33,7 +33,7 @@ namespace PointSalad_App
         }
 
         /// <summary>
-        /// Метод замещения взятой карты верхней картой из колоды.
+        /// Метод замещения взятой карты верхней из колоды.
         /// </summary>
         /// <param name="index"></param>
         /// <param name="stack"></param>
@@ -75,7 +75,13 @@ namespace PointSalad_App
         //    return _massive;
         //} 
         }
-
+        /// <summary>
+        /// Метод, заменяющий пустые овощи на рецепты
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="stack"></param>
+        /// <param name="massive"></param>
+        /// <returns></returns>
         public static Array ReplaceEmptyVegetablesCard(int index, Stack<Card> stack, ref Card[] massive) 
         {
             if (massive[0] == null)
@@ -93,9 +99,27 @@ namespace PointSalad_App
                 {
                     massive[0] = stack.Pop();
                 }
-
             }
             return massive;
+        }
+        /// <summary>
+        /// Метод, проверяющий закончились ли карты на поле.
+        /// </summary>
+        /// <param name="massive"></param>
+        /// <returns></returns>
+        public static bool CheckGameContinue(Card[] massive) 
+        {
+            bool isGoing = false;
+            for (int i = 0; i < massive.Length-1; i++)
+            {
+                if (massive[i] != null)
+                {
+                    isGoing = true;
+                    break;
+                }
+
+            }
+            return isGoing;
         }
 
         static void Main(string[] args)
@@ -144,7 +168,6 @@ namespace PointSalad_App
 
             Console.WriteLine("Игра начинается...");
 
-            #region DefaultStatement
 
             //Массив всех карт.
             Card[] allCardsMassive = new Card [] { tomatoCardEx1, tomatoCardEx2, tomatoCardEx3,
@@ -160,6 +183,7 @@ namespace PointSalad_App
                 allCardsMassive[j] = allCardsMassive[i];
                 allCardsMassive[i] = tmp;
             }
+
             Stack<Card> allCardsStack = new Stack<Card>(allCardsMassive);
 
             Index index0 = 0;
@@ -177,43 +201,44 @@ namespace PointSalad_App
                 column2[i] = allCardsStack.Pop();
                 column3[i] = allCardsStack.Pop();
             }
-
-            #region Empty Spaces
-            while (column1 != null & column2 != null & column3 != null)
+            bool alive = true;
+            restart:
+            if (alive)
             {
-                for (int i = 0; i < game.players.Count-1; i++) //TODO условие на налл
+                foreach (var player in game.players)
                 {
+                    #region Раскладка
                     object emptySpace = "*****";
                     object place1;
                     if (column1[0] == null)
                         place1 = emptySpace;
                     else
                         place1 = column1[0].QuestText;
-                    
+
                     object place2;
                     if (column2[0] == null)
                         place2 = emptySpace;
                     else
                         place2 = column2[0].QuestText;
-                    
+
                     object place3;
                     if (column3[0] == null)
                         place3 = emptySpace;
                     else
                         place3 = column3[0].QuestText;
-                    
+
                     object place4;
                     if (column1[1] == null)
                         place4 = emptySpace;
                     else
                         place4 = column1[1].Type;
-                    
+
                     object place5;
                     if (column2[1] == null)
                         place5 = emptySpace;
                     else
                         place5 = column2[1].Type;
-                    
+
                     object place6;
                     if (column3[1] == null)
                         place6 = emptySpace;
@@ -237,7 +262,6 @@ namespace PointSalad_App
                         place9 = emptySpace;
                     else
                         place9 = column3[2].Type;
-                #endregion
 
                     Console.WriteLine("1. " + place1 + "\t 2. " + place2 + "\t 3. " + place3);
                     Console.WriteLine("--------------------------------------------------------------------------------");
@@ -247,18 +271,22 @@ namespace PointSalad_App
                     Console.WriteLine();
                     #endregion
 
+                    Console.WriteLine($"Ходит игрок {player.iD}.....");
+                    Console.WriteLine();
+                    Console.WriteLine($"салат: {player.lettuceStack}\n");
                     ConsoleColor color = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
                     Console.WriteLine("1. Взять карту рецепта \t 2. Взять два овоща  \t 3. Выйти из программы");
                     Console.WriteLine("Введите номер пункта:");
                     Console.ForegroundColor = color;
+                    
                     try
                     {
                         int command1 = Convert.ToInt32(Console.ReadLine());
                         switch (command1)
                         {
                             case 1:
-                                Console.WriteLine("Введи номер карты рецепта, которую требуется добавить в свой стек:");
+                                Console.WriteLine("Введи номер карты рецепта, которую хочешь взять: ");
                                 int command2 = Convert.ToInt32(Console.ReadLine());
                                 switch (command2)
                                 {
@@ -266,7 +294,7 @@ namespace PointSalad_App
                                         {
                                             try
                                             {
-                                                TakeQuest(game, column1[0], i);
+                                                TakeQuest(game, column1[0], player.iD - 1);
                                             }
                                             catch (Exception)
                                             {
@@ -275,17 +303,17 @@ namespace PointSalad_App
                                                 Console.WriteLine();
                                                 Console.ResetColor();
                                             }
-                                            finally 
+                                            finally
                                             {
                                                 column1 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column1);
                                             }
-                                            break;
+                                            continue;
                                         }
                                     case 2:
                                         {
                                             try
                                             {
-                                                TakeQuest(game, column2[0], i);
+                                                TakeQuest(game, column2[0], player.iD - 1);
                                             }
                                             catch (Exception)
                                             {
@@ -294,17 +322,17 @@ namespace PointSalad_App
                                                 Console.WriteLine();
                                                 Console.ResetColor();
                                             }
-                                            finally 
+                                            finally
                                             {
-                                                column2 = (Card[])ReplaceEmptyQuestCard(1, allCardsStack, ref column2);
+                                                column2 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column2);
                                             }
-                                            break;
+                                            continue;
                                         }
                                     case 3:
                                         {
                                             try
                                             {
-                                                TakeQuest(game, column3[0], i);
+                                                TakeQuest(game, column3[0], player.iD - 1);
                                             }
                                             catch (Exception)
                                             {
@@ -313,16 +341,15 @@ namespace PointSalad_App
                                                 Console.WriteLine();
                                                 Console.ResetColor();
                                             }
-                                            finally 
+                                            finally
                                             {
-                                                column3 = (Card[])ReplaceEmptyQuestCard(2, allCardsStack, ref column3);
+                                                column3 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column3);
                                             }
-                                            break;
+                                            continue;
                                         }
                                 }
                                 break;
                             case 2:
-
                                 Console.WriteLine("Введите карту первого овоща:");
                                 int command3 = Convert.ToInt32(Console.ReadLine());
                                 Console.WriteLine("Введите карту второго овоща:");
@@ -341,7 +368,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column1[1], i);
+                                                    TakeVegetable(game, column1[1], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -357,7 +384,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column2[1], i);
+                                                    TakeVegetable(game, column2[1], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -373,7 +400,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column3[1], i);
+                                                    TakeVegetable(game, column3[1], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -389,7 +416,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column1[2], i);
+                                                    TakeVegetable(game, column1[2], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -405,7 +432,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column2[2], i);
+                                                    TakeVegetable(game, column2[2], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -421,7 +448,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column3[2], i);
+                                                    TakeVegetable(game, column3[2], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -440,7 +467,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column1[1], i);
+                                                    TakeVegetable(game, column1[1], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -456,7 +483,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column2[1], i);
+                                                    TakeVegetable(game, column2[1], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -472,7 +499,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column3[1], i);
+                                                    TakeVegetable(game, column3[1], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -488,7 +515,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column1[2], i);
+                                                    TakeVegetable(game, column1[2], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -504,7 +531,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column2[2], i);
+                                                    TakeVegetable(game, column2[2], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -520,7 +547,7 @@ namespace PointSalad_App
                                             {
                                                 try
                                                 {
-                                                    TakeVegetable(game, column3[2], i);
+                                                    TakeVegetable(game, column3[2], player.iD - 1);
                                                 }
                                                 catch
                                                 {
@@ -537,6 +564,25 @@ namespace PointSalad_App
                                 }
                                 break;
                         }
+                        Card[] cardsInPlayPre = new Card[9];
+
+                        for (int k = 0, i = 0; i <= 2; i++, k++)
+                        {
+                            cardsInPlayPre[k] = column1[i];
+                            k++;
+                            cardsInPlayPre[k] = column2[i];
+                            k++;
+                            cardsInPlayPre[k] = column3[i];
+                        }
+                        bool isAlive1 = CheckGameContinue(cardsInPlayPre);
+                        if (isAlive1)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            alive = false;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -547,12 +593,35 @@ namespace PointSalad_App
                         Console.ForegroundColor = color;
                     }
                 }
+                Card[] cardsInPlay = new Card[9];
+
+                for (int k = 0, i = 0; i <= 2; i++, k++)
+                {
+                //    cardsInPlay[k] = column1[i];
+                //    k++;
+                //    cardsInPlay[k] = column2[i];
+                //    k++;
+                //    cardsInPlay[k] = column3[i];
+                }
+                //bool isAlive2 = CheckGameContinue(cardsInPlay);
+                if (alive)
+                {
+                    goto restart;
+                }
+                //else
+                //{
+                //    alive = false;
+
+                //}
             }
-            for (int i = 0; i < game.players.Count; i++)
-            {
-                game.players[i].Scoring();
-                Console.WriteLine($"Игрок {i+1} набрал {game.players[i].Scoring()}");
-            }
+
+            for (int i = 0; i <= game.players.Count - 1; i++)
+               {
+                 game.players[i].Scoring();
+                 Console.WriteLine($"Игрок {i + 1} набрал {game.players[i].Scoring()}");
+               }
+                Console.ReadLine();
+            
         }
     }
 }

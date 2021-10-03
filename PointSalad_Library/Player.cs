@@ -67,27 +67,27 @@ namespace PointSalad_Library
         /// <param name="card"></param>
         public virtual void TakeVegetable(Card card)
         {
-            if (card.Type == "tomato")
+            if (card.Type == "томат")
             {
                 tomatoStack++;
             }
-            if (card.Type == "onion")
+            if (card.Type == "лук")
             {
                 onionStack++;
             }
-            if (card.Type == "carrot")
+            if (card.Type == "морковь")
             {
                 carrotStack++;
             }
-            if (card.Type == "cabbage")
+            if (card.Type == "капуста")
             {
                 cabbageStack++;
             }
-            if (card.Type == "lettuce")
+            if (card.Type == "салат")
             {
                 lettuceStack++;
             }
-            if (card.Type == "pepper")
+            if (card.Type == "перец")
             {
                 pepperStack++;
             }
@@ -135,7 +135,7 @@ namespace PointSalad_Library
         /// </summary>
         public int tomatoStack { get; set; }
         /// <summary>
-        /// Стек карт лука икрока.
+        /// Стек карт лука игрока.
         /// </summary>
         public int onionStack { get; set; }
         /// <summary>
@@ -154,11 +154,10 @@ namespace PointSalad_Library
         /// Стек карт перцев игрока.
         /// </summary>
         public int pepperStack { get; set; }
-        /// <summary>
-        /// Стек карт заданий игрока.
-        /// </summary>
         #endregion
 
-        public List<Card> questStack = new List<Card>();
+        List<int> VegetablesStacks = new () ;
+
+        public List<Card> questStack;
     }
 }

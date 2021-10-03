@@ -7,7 +7,7 @@ namespace PointSalad_Library
 {
     public abstract class TomatoCards : Card
     {
-        private string type = "tomato";
+        private string type = "томат";
         public override string Type { get => type; set => type = value; }
         /// <summary>
         /// Метод начисления очков за рецепт.

@@ -11,7 +11,7 @@ namespace PointSalad_Library
         /// <summary>
         /// Счетчик раундов.
         /// </summary>
-        private static int roundCounter = 0;
+        private int roundCounter = 0;
         /// <summary>
         /// Массив игроков.
         /// </summary>
@@ -24,7 +24,6 @@ namespace PointSalad_Library
         {
             this.Name = name;
         }
-
         public void CreatePlayer(AccountStateHandler CreatePlayerHandler,
                            AccountStateHandler TakeVegetableHandler,
                            AccountStateHandler TakeQuestHandler, int cp, string name) 

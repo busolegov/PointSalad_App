@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public abstract class PepperCards : Card
+    public abstract class CabbageCards : Card
     {
-        private string type = "перец";
+        private string type = "капуста";
         public override string Type { get => type; set => type = value; }
         /// <summary>
         /// Метод начисления очков за рецепт.

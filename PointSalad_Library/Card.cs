@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,8 @@ namespace PointSalad_Library
     /// </summary>
     public abstract class Card
     {
-        /// <summary>
-        /// Тип карты - овощ.
-        /// </summary>
         public abstract string Type { get; set; }
         public void Quest() { }
         public virtual string QuestText { get; set; }
-
     }
 }
