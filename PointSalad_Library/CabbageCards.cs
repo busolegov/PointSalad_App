@@ -14,7 +14,7 @@ namespace PointSalad_Library
         /// Метод начисления очков за рецепт.
         /// </summary>
         /// <param name="player"></param>*/
-        public abstract void Quest(Game<Player> game, Player player);
+        public abstract override void Quest(Game<Player> game, Player player);
         public abstract override string QuestText { get; set; }
     }
 }

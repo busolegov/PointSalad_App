@@ -20,6 +20,7 @@ namespace PointSalad_Library
         /// Событие, возникающее при взятии карты задания.
         /// </summary>
         public event AccountStateHandler HasTakenQuest;
+        public event AccountStateHandler HasScoring;
         /// <summary>
         /// Метод вызова события.
         /// </summary>
@@ -55,11 +56,17 @@ namespace PointSalad_Library
         {
             CallEvent(e, HasCreatePlayer);
         }
+        public virtual void OnHasScoring(AccountEventArgs e, int iD)
+        {
+            CallEvent(e, HasScoring);
+        }
+
 
         public virtual void CreatePlayer() 
         {
             OnCreatePlayer(new AccountEventArgs($"Создан игрок {this.iD}"));        
         }
+
 
         /// <summary>
         /// Метод взятия карты овоща.
@@ -69,27 +76,27 @@ namespace PointSalad_Library
         {
             if (card.Type == "томат")
             {
-                tomatoStack++;
+                TomatoStack++;
             }
             if (card.Type == "лук")
             {
-                onionStack++;
+                OnionStack++;
             }
             if (card.Type == "морковь")
             {
-                carrotStack++;
+                CarrotStack++;
             }
             if (card.Type == "капуста")
             {
-                cabbageStack++;
+                CabbageStack++;
             }
             if (card.Type == "салат")
             {
-                lettuceStack++;
+                LetucceStack++;
             }
             if (card.Type == "перец")
             {
-                pepperStack++;
+                PepperStack++;
             }
             OnHasTakenVegetable(new AccountEventArgs("В стек овощей добавлена карта " + card.Type + "\n--------------------", card));
         }
@@ -99,21 +106,18 @@ namespace PointSalad_Library
         /// <param name="card"></param>
         public virtual void TakeQuest(Card card)
         {
-            questStack.Add(card);
+            QuestStack.Add(card);
             OnHasTakenQuest(new AccountEventArgs("В стек рецептов добавлена карта " + card.QuestText + "\n--------------------", card));
         }
-        /// <summary>
-        /// Метод подсчета очков.
-        /// </summary>
-        /// <returns></returns>
-        public int Scoring()
+        public virtual void Scoring(int iD)
         {
-            foreach (var item in questStack)
+            foreach (var card in QuestStack)
             {
-                item.Quest();
+                card.Quest(Game<T>game, );
             }
-            return Score;
+            OnHasScoring(new AccountEventArgs($"Игрок {iD} набрал " + Score + "\n--------------------"), iD);
         }
+
         public Player()
         {
             iD = ++counter;
@@ -133,31 +137,68 @@ namespace PointSalad_Library
         /// <summary>
         /// Стек карт томатов игрока.
         /// </summary>
-        public int tomatoStack { get; set; }
+        public int TomatoStack { get; set; }
         /// <summary>
         /// Стек карт лука игрока.
         /// </summary>
-        public int onionStack { get; set; }
+        public int OnionStack { get; set; }
         /// <summary>
         /// Стек карт морковки игрока.
         /// </summary>
-        public int carrotStack { get; set; }
+        public int CarrotStack { get; set; }
         /// <summary>
         /// Стек карт капусты игрока.
         /// </summary>
-        public int cabbageStack { get; set; }
+        public int CabbageStack { get; set; }
         /// <summary>
         /// Стек карт салата игрока.
         /// </summary>
-        public int lettuceStack { get; set; }
+        public int LetucceStack { get; set; }
         /// <summary>
         /// Стек карт перцев игрока.
         /// </summary>
-        public int pepperStack { get; set; }
+        public int PepperStack { get; set; }
         #endregion
 
-        List<int> VegetablesStacks = new () ;
+        public List<Card> QuestStack = new List<Card>();
+        /// <summary>
+        /// Метод подсчета очков.
+        /// </summary>
+        /// <returns></returns>
+        //public virtual void Scoring()
+        //{
+        //    foreach (var item in QuestStack)
+        //    {
+        //        int Sum = item.Quest();
+        //    }
+        //    return Score;
+        //}
 
-        public List<Card> questStack;
+        public void ShowInfo(int iD)
+        {
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine($"Ходит игрок {iD}.....");
+            Console.WriteLine();
+
+            Console.WriteLine($"салат: {LetucceStack}");
+            Console.WriteLine($"лук: {OnionStack}");
+            Console.WriteLine($"капуста: {CabbageStack}");
+            Console.WriteLine($"перец: {PepperStack}");
+            Console.WriteLine($"томат: {TomatoStack}");
+            Console.WriteLine($"морковь: {CarrotStack}");
+            Console.WriteLine("---------------------------------------------------------------");
+            foreach (Card questCards in QuestStack)
+            {
+                if (QuestStack == null)
+                {
+                    Console.WriteLine("Нет карт рецептов");
+                } 
+
+                else
+                    Console.WriteLine(questCards.QuestText);
+            }
+            Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("---------------------------------------------------------------");
+        }
     }
 }

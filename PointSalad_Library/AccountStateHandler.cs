@@ -21,6 +21,8 @@ namespace PointSalad_Library
         /// Сообщение о действии
         /// </summary>
         public string Message { get; set; }
+
+        public int iD;
         /// <summary>
         /// Информация о взятой карте
         /// </summary>
@@ -33,6 +35,11 @@ namespace PointSalad_Library
         public AccountEventArgs(string mes)
         {
             Message = mes;
+        }
+        public AccountEventArgs(string mes, int iD)
+        {
+            Message = mes;
+            this.iD = iD;
         }
     }
     

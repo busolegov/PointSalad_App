@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public abstract class TomatoCards : Card
+    public class TomatoCards : Card
     {
         private string type = "томат";
         public override string Type { get => type; set => type = value; }
@@ -13,7 +13,7 @@ namespace PointSalad_Library
         /// Метод начисления очков за рецепт.
         /// </summary>
         /// <param name="player"></param>*/
-        public abstract void Quest(Game<Player> game, Player player);
-        public abstract override string QuestText { get; set; }
+        public override void Quest() { }
+        public override string QuestText { get; set; }
     }
 }

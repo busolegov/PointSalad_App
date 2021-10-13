@@ -10,10 +10,16 @@ namespace PointSalad_Library
     /// <summary>
     /// Абстрактный класс всех карт.
     /// </summary>
-    public abstract class Card
+    public abstract class Card : IEnumerable
     {
+        public abstract void Quest();
         public abstract string Type { get; set; }
-        public void Quest() { }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable)QuestText).GetEnumerator();
+        }
+
         public virtual string QuestText { get; set; }
     }
 }

@@ -11,13 +11,13 @@ namespace PointSalad_Library
     /// </summary>
     public class TomatoCardEx1 : TomatoCards
     {
-        private string text = "+3/(лук) & -2/(перец)";
+        private string text = "+3/(лук) -2/(перец)";
         public override string QuestText { get => text; set => text = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.onionStack;
-            player.Score -= player.pepperStack;
+            player.Score += 3 * player.OnionStack;
+            player.Score -= 2* player.PepperStack;
         }
     }
     public class TomatoCardEx2 : TomatoCards
@@ -26,26 +26,26 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            if (player.carrotStack < player.onionStack)
+            if (player.CarrotStack < player.OnionStack)
             {
-                if (player.carrotStack < player.pepperStack)
-                {
-                    player.Score += 7*player.carrotStack;
-                }
+                if (player.CarrotStack < player.PepperStack)
+                    player.Score += 7 * player.CarrotStack;
                 else
-                {
-
-                }
+                if (player.PepperStack < player.OnionStack)
+                    player.Score += 7 * player.PepperStack;
             }
+            else
+                player.Score += 7 * player.OnionStack;
         }
     }
     public class TomatoCardEx3 : TomatoCards
     {
-        public string text = "+1/(лук) & +1/(морковь)";
+        public string text = "+1/(лук) +1/(морковь)";
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 5 * (player.onionStack % 2);
+            player.Score += player.OnionStack;
+            player.Score += player.CarrotStack;
         }
     }
     public class TomatoCardEx4 : TomatoCards
@@ -54,7 +54,7 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += player.onionStack % 2;
+            player.Score += 5* (player.OnionStack % 2);
         }
     }
     
@@ -65,8 +65,10 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.onionStack;
-            player.Score -= player.pepperStack;
+            if (player.PepperStack < player.CabbageStack)
+                player.Score += 4 * player.PepperStack;
+            else
+                player.Score += 4 * player.CabbageStack;
         }
     }
 
@@ -76,8 +78,10 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.onionStack;
-            player.Score -= player.pepperStack;
+            if (player.CarrotStack < player.LetucceStack)
+                player.Score += 4 * player.CarrotStack;
+            else
+                player.Score += 4 * player.LetucceStack;
         }
     }
 
@@ -88,9 +92,9 @@ namespace PointSalad_Library
         public override void Quest(Game <Player>game, Player player)
         {
             List<int> l = new List<int>();
-            foreach (var item in game.players)
+            foreach (var item in game.players)      //TODO
             {
-                l.Add(item.onionStack);
+                l.Add(item.OnionStack);
             }
             l.Max();
         }
@@ -104,9 +108,9 @@ namespace PointSalad_Library
         public override void Quest(Game<Player> game, Player player)
         {
             List<int> l = new List<int>();
-            foreach (var item in game.players)
+            foreach (var item in game.players)      //TODO
             {
-                l.Add(item.onionStack);
+                l.Add(item.OnionStack);
             }
             l.Max();
         }
@@ -119,12 +123,7 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            List<int> l = new List<int>();
-            foreach (var item in game.players)
-            {
-                l.Add(item.onionStack);
-            }
-            l.Max();
+            player.Score += 2 * player.OnionStack;
         }
 
     }

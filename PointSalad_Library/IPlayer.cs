@@ -24,6 +24,7 @@ namespace PointSalad_Library
         /// <summary>
         /// Метод подсчета очков за карты рецептов.
         /// </summary>
-        int Scoring();
+        void Scoring(int num);
+
     }
 }

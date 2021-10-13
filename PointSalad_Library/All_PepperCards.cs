@@ -12,9 +12,9 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 4 * player.lettuceStack;
-            player.Score -= 2 * player.tomatoStack;
-            player.Score -= 2 * player.cabbageStack;
+            player.Score += 4 * player.LetucceStack;
+            player.Score -= 2 * player.TomatoStack;
+            player.Score -= 2 * player.CabbageStack;
         }
     }
 
@@ -24,9 +24,9 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 2 * player.lettuceStack;
-            player.Score += player.onionStack;
-            player.Score -= 2 * player.pepperStack;
+            player.Score += 2 * player.LetucceStack;
+            player.Score += player.OnionStack;
+            player.Score -= 2 * player.PepperStack;
         }
     }
 
@@ -36,9 +36,9 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.lettuceStack;
-            player.Score -= player.onionStack;
-            player.Score -= player.pepperStack;
+            player.Score += 3 * player.LetucceStack;
+            player.Score -= player.OnionStack;
+            player.Score -= player.PepperStack;
         }
     }
 
@@ -48,9 +48,9 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 2 * player.lettuceStack;
-            player.Score += 2 * player.carrotStack;
-            player.Score -= 4 * player.onionStack;
+            player.Score += 2 * player.LetucceStack;
+            player.Score += 2 * player.CarrotStack;
+            player.Score -= 4 * player.OnionStack;
         }
     }
 
@@ -60,32 +60,78 @@ namespace PointSalad_Library
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 8 * (player.onionStack % 3);
+            player.Score += 8 * (player.OnionStack % 3);
         }
     }
 
-    //public class PepperCardEx6 : PepperCards
-    //{
-    //    public string text = "+7/(перец + салат + капуста";
-    //    public override string QuestText { get => text; set => text = value; }
-    //    public override void Quest(Game<Player> game, Player player)
-    //    {
-    //        player.Score += 3 * player.onionStack;
-    //        player.Score -= player.pepperStack;
-    //    }
-    //}
-    public class PepperCardEx7 : PepperCards
+    public class PepperCardEx6 : PepperCards
     {
         public string text = "+7/(перец + салат + капуста";
         public override string QuestText { get => text; set => text = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            if (player.lettuceStack % 2 == 0)
+            if (player.PepperStack < player.LetucceStack)
+            {
+                if (player.PepperStack < player.CabbageStack)
+                {
+                    player.Score += 7 * player.PepperStack;
+                }
+                else
+                if (player.LetucceStack < player.CabbageStack)
+                {
+                    player.Score += 7 * player.LetucceStack;
+                }
+            }
+            else
+                player.Score += 7 * player.CabbageStack;
+        }
+    }
+    public class PepperCardEx7 : PepperCards
+    {
+        public string text = "+7/(чётн. салата) +3/(нечетн. салата)";
+        public override string QuestText { get => text; set => text = value; }
+        public override void Quest(Game<Player> game, Player player)
+        {
+            if (player.LetucceStack % 2 == 0)
             {
                 player.Score += 7;
             }
             else
                 player.Score += 3;
+        }
+    }
+
+    public class PepperCardEx8 : PepperCards
+    {
+        public string text = "+1/(салат) +1/(лук)";
+        public override string QuestText { get => text; set => text = value; }
+        public override void Quest(Game<Player> game, Player player)
+        {
+            player.Score += player.LetucceStack;
+            player.Score += player.OnionStack;
+        }
+    }
+
+    public class PepperCardEx9 : PepperCards
+    {
+        public string text = "+7/(томат + салат + морковь)";
+        public override string QuestText { get => text; set => text = value; }
+        public override void Quest(Game<Player> game, Player player)
+        {
+            if (player.TomatoStack < player.LetucceStack)
+            {
+                if (player.TomatoStack < player.CarrotStack)
+                {
+                    player.Score += 7 * player.TomatoStack;
+                }
+                else
+                if (player.LetucceStack < player.CarrotStack)
+                {
+                    player.Score += 7 * player.LetucceStack;
+                }
+            }
+            else
+                player.Score += 7 * player.CarrotStack;
         }
     }
 }

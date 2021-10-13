@@ -7,6 +7,10 @@ namespace PointSalad_App
 {
     class Program
     {
+        public static void Scoring(Game <Player> game, int iD) 
+        {
+            game.Scoring(iD);
+        }
         public static void TakeQuest(Game <Player> game, Card card, int iD)
         {
             game.TakeQuest(card, iD);
@@ -15,6 +19,11 @@ namespace PointSalad_App
         {
             game.TakeVegetable(card, iD);
         }
+        public static void ScoringHandler(object sender, AccountEventArgs e) 
+        {
+            Console.WriteLine(e.Message);
+        }
+
         public static void CreatePlayerHandler(object sender, AccountEventArgs e) 
         {
             Console.WriteLine(e.Message);
@@ -29,7 +38,7 @@ namespace PointSalad_App
         }
         public static void CR(Game <Player> game, int cp, string name)
         {
-            game.CreatePlayer(CreatePlayerHandler, TakeQuestHandler, TakeVegetableHandler, cp, name);
+            game.CreatePlayer(ScoringHandler, CreatePlayerHandler, TakeQuestHandler, TakeVegetableHandler, cp, name);
         }
 
         /// <summary>
@@ -50,30 +59,6 @@ namespace PointSalad_App
                 massive[index] = stack.Pop();
             }
             return massive;
-
-            //try
-            //{
-            //    Card[] temp = new Card[_massive.Length];
-            //    for (int i = 0; i < _massive.Length; i++)
-            //    {
-            //        temp[i] = _massive[i];
-            //    }
-            //    if (stack.Count == 0)
-            //    {
-            //        temp[index] = null;
-
-        //    }
-        //    else
-        //    {
-        //        temp[index] = stack.Pop();
-        //    }
-        //    Card[] massive = temp;
-        //    return massive;
-        //}
-        //catch
-        //{
-        //    return _massive;
-        //} 
         }
         /// <summary>
         /// Метод, заменяющий пустые овощи на рецепты
@@ -117,13 +102,39 @@ namespace PointSalad_App
                     isGoing = true;
                     break;
                 }
-
             }
             return isGoing;
         }
 
+        public static void MixCardsForGame(int count, List<Card> Massive1, Card[] Massive2, Card[] Massive3,
+                                            Card[] Massive4, Card[] Massive5, Card[] Massive6) 
+        {
+            //Random rndm = new Random();
+            //for (int i = 0; i < count; i++)
+            //{
+            //    for (int k = 0; k < count; k++)
+            //    {
+            //        int j = rndm.Next(0, Massive1.Length-k);
+            //    }
+            //}
+
+            Random rand = new Random();
+            for (int i = Massive1.Count; i >= Massive1.Count - count ; i--)
+            {
+                int j = rand.Next(0, i);
+                List<Card> tmp = new List<Card>();
+                tmp.Add(Massive1[j]);
+                Massive1.RemoveAt(j);
+            }
+
+        }
+
+
+
         static void Main(string[] args)
         {
+            #region Создание карт
+
             //Создание всех карт.
             #region Описание карт томатов
             Card tomatoCardEx1 = new TomatoCardEx1();
@@ -132,63 +143,202 @@ namespace PointSalad_App
             Card tomatoCardEx4 = new TomatoCardEx4();
             Card tomatoCardEx5 = new TomatoCardEx5();
             Card tomatoCardEx6 = new TomatoCardEx6();
-            Card tomatoCardEx7 = new TomatoCardEx7();
-            Card tomatoCardEx8 = new TomatoCardEx8();
+            //Card tomatoCardEx7 = new TomatoCardEx7();
+            //Card tomatoCardEx8 = new TomatoCardEx8();
             Card tomatoCardEx9 = new TomatoCardEx9();
-            /*Card tomatoCardEx10 = new TomatoCardEx10();
-            Card tomatoCardEx11 = new TomatoCardEx11();
-            Card tomatoCardEx12 = new TomatoCardEx12();
-            Card tomatoCardEx13 = new TomatoCardEx13();
-            Card tomatoCardEx14 = new TomatoCardEx14();
-            Card tomatoCardEx15 = new TomatoCardEx15();
-            Card tomatoCardEx16 = new TomatoCardEx16();
-            Card tomatoCardEx17 = new TomatoCardEx17();
-            Card tomatoCardEx18 = new TomatoCardEx18();*/
+
+            //Card[] TomatoMassive = new Card[] { tomatoCardEx1, tomatoCardEx2, tomatoCardEx3,
+            //                                    tomatoCardEx4,tomatoCardEx5,tomatoCardEx6,
+            //                                    tomatoCardEx9};
+
+            List<Card> TomatoCards = new List<Card>();
+            TomatoCards.Add(tomatoCardEx1);
+            TomatoCards.Add(tomatoCardEx2);
+            TomatoCards.Add(tomatoCardEx3);
+            TomatoCards.Add(tomatoCardEx4);
+            TomatoCards.Add(tomatoCardEx5);
+            TomatoCards.Add(tomatoCardEx6);
+            //TomatoCards.Add(tomatoCardEx7);
+            //TomatoCards.Add(tomatoCardEx8);
+            TomatoCards.Add(tomatoCardEx9);
+            #endregion
+
+            #region Описание карт перцев
+            Card pepperCardEx1 = new PepperCardEx1();
+            Card pepperCardEx2 = new PepperCardEx2();
+            Card pepperCardEx3 = new PepperCardEx2();
+            Card pepperCardEx4 = new PepperCardEx2();
+            Card pepperCardEx5 = new PepperCardEx2();
+            Card pepperCardEx6 = new PepperCardEx2();
+            Card pepperCardEx7 = new PepperCardEx2();
+            Card pepperCardEx8 = new PepperCardEx2();
+            Card pepperCardEx9 = new PepperCardEx2();
+
+            //Card [] PepperMassive = new Card [] { pepperCardEx1, pepperCardEx2, pepperCardEx3,
+            //                                      pepperCardEx4, pepperCardEx5, pepperCardEx6,
+            //                                      pepperCardEx7, pepperCardEx8, pepperCardEx9};
+
+            List<Card> PepperCards = new List<Card>();
+            PepperCards.Add(pepperCardEx1);
+            PepperCards.Add(pepperCardEx2);
+            PepperCards.Add(pepperCardEx3);
+            PepperCards.Add(pepperCardEx4);
+            PepperCards.Add(pepperCardEx5);
+            PepperCards.Add(pepperCardEx6);
+            PepperCards.Add(pepperCardEx7);
+            PepperCards.Add(pepperCardEx8);
+            PepperCards.Add(pepperCardEx9);
+            #endregion
+
+            #region Описание карт салата
+            Card lettuceCardEx1 = new LettuceCardEx1();
+            Card lettuceCardEx2 = new LettuceCardEx2();
+            Card lettuceCardEx3 = new LettuceCardEx3();
+            Card lettuceCardEx4 = new LettuceCardEx4();
+            Card lettuceCardEx5 = new LettuceCardEx5();
+            Card lettuceCardEx6 = new LettuceCardEx6();
+            Card lettuceCardEx7 = new LettuceCardEx7();
+            Card lettuceCardEx8 = new LettuceCardEx8();
+            Card lettuceCardEx9 = new LettuceCardEx9();
+
+            //Card[] LettuceMassive = new Card[] { lettuceCardEx1, lettuceCardEx2, lettuceCardEx3,
+            //                                      lettuceCardEx4, lettuceCardEx5, lettuceCardEx6,
+            //                                      lettuceCardEx7, lettuceCardEx8, lettuceCardEx9};
+            List<Card> LettuceCards = new List<Card>();
+            LettuceCards.Add(lettuceCardEx1);
+            LettuceCards.Add(lettuceCardEx2);
+            LettuceCards.Add(lettuceCardEx3);
+            LettuceCards.Add(lettuceCardEx4);
+            LettuceCards.Add(lettuceCardEx5);
+            LettuceCards.Add(lettuceCardEx6);
+            LettuceCards.Add(lettuceCardEx7);
+            LettuceCards.Add(lettuceCardEx8);
+            LettuceCards.Add(lettuceCardEx9);
+            #endregion
+
+            #region Описание карт капусты
+            Card cabbageCardEx1 = new CabbageCardEx1();
+            Card cabbageCardEx2 = new CabbageCardEx2();
+            Card cabbageCardEx3 = new CabbageCardEx3();
+            Card cabbageCardEx4 = new CabbageCardEx4();
+            Card cabbageCardEx5 = new CabbageCardEx5();
+            Card cabbageCardEx6 = new CabbageCardEx6();
+            Card cabbageCardEx7 = new CabbageCardEx7();
+            Card cabbageCardEx8 = new CabbageCardEx8();
+            Card cabbageCardEx9 = new CabbageCardEx9();
+
+            //Card[] CabbageMassive = new Card[] { pepperCardEx1, pepperCardEx2, pepperCardEx3,
+            //                                     pepperCardEx4, pepperCardEx5, pepperCardEx6,
+            //                                     pepperCardEx7, pepperCardEx8, pepperCardEx9};
+            List<Card> CabbageCards = new List<Card>();
+            CabbageCards.Add(cabbageCardEx1);
+            CabbageCards.Add(cabbageCardEx2);
+            CabbageCards.Add(cabbageCardEx3);
+            CabbageCards.Add(cabbageCardEx4);
+            CabbageCards.Add(cabbageCardEx5);
+            CabbageCards.Add(cabbageCardEx6);
+            CabbageCards.Add(cabbageCardEx7);
+            CabbageCards.Add(cabbageCardEx8);
+            CabbageCards.Add(cabbageCardEx9);
 
             #endregion
-           
-            #region Описание карт перцев
-            Card PepperCardEx1 = new PepperCardEx1();
-            Card PepperCardEx2 = new PepperCardEx2();
+
+            #region Описание карт лука
+            Card onionCardEx1 = new OnionCardEx1();
+            Card onionCardEx2 = new OnionCardEx2();
+            Card onionCardEx3 = new OnionCardEx3();
+            Card onionCardEx4 = new OnionCardEx4();
+            Card onionCardEx5 = new OnionCardEx5();
+            Card onionCardEx6 = new OnionCardEx6();
+            Card onionCardEx7 = new OnionCardEx7();
+            Card onionCardEx8 = new OnionCardEx8();
+            Card onionCardEx9 = new OnionCardEx9();
+
+            //Card[] OnionMassive = new Card[] { onionCardEx1, onionCardEx2, onionCardEx3,
+            //                                   onionCardEx4, onionCardEx5, onionCardEx6,
+            //                                   onionCardEx7, onionCardEx8, onionCardEx9};
+
+            List<Card> OnionCards = new List<Card>();
+            OnionCards.Add(onionCardEx1);
+            OnionCards.Add(onionCardEx2);
+            OnionCards.Add(onionCardEx3);
+            OnionCards.Add(onionCardEx4);
+            OnionCards.Add(onionCardEx5);
+            OnionCards.Add(onionCardEx6);
+            OnionCards.Add(onionCardEx7);
+            OnionCards.Add(onionCardEx8);
+            OnionCards.Add(onionCardEx9);
+            #endregion
+
+            #region Описание карт моркови
+            Card carrotCardEx1 = new CarrotCardEx1();
+            Card carrotCardEx2 = new CarrotCardEx2();
+            Card carrotCardEx3 = new CarrotCardEx3();
+            Card carrotCardEx4 = new CarrotCardEx4();
+            Card carrotCardEx5 = new CarrotCardEx5();
+            Card carrotCardEx6 = new CarrotCardEx6();
+            Card carrotCardEx7 = new CarrotCardEx7();
+            Card carrotCardEx8 = new CarrotCardEx8();
+            Card carrotCardEx9 = new CarrotCardEx9();
+
+            //Card[] CarroteMassive = new Card[] { carrotCardEx1, carrotCardEx2, carrotCardEx3,
+            //                                     carrotCardEx4, carrotCardEx5, carrotCardEx6,
+            //                                     carrotCardEx7, carrotCardEx8, carrotCardEx9};
+
+            List<Card> CarrotCards = new List<Card>();
+            CarrotCards.Add(carrotCardEx1);
+            CarrotCards.Add(carrotCardEx2);
+            CarrotCards.Add(carrotCardEx3);
+            CarrotCards.Add(carrotCardEx4);
+            CarrotCards.Add(carrotCardEx5);
+            CarrotCards.Add(carrotCardEx6);
+            CarrotCards.Add(carrotCardEx7);
+            CarrotCards.Add(carrotCardEx8);
+            CarrotCards.Add(carrotCardEx9);
+            #endregion
             #endregion
 
             string name = "Новая игра";
             Console.WriteLine(name);
             Game <Player> game = new Game <Player> (name);
-            Console.WriteLine("Введите количество игроков");
-            string cp = Console.ReadLine();
-            int countPlayers = Convert.ToInt32(cp);
-            if (countPlayers > 5 || countPlayers < 2)
+            int countPlayers;
+            while (true)
             {
-                throw new Exception("Количество игроков должно быть от 2 до 5");
+                Console.WriteLine("Введите количество игроков от 2 до 5");
+                if (int.TryParse(Console.ReadLine(), out countPlayers) & (countPlayers >1 & countPlayers < 6))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Неверный формат или количество игроков.");
+                }
             }
             Console.WriteLine($"В игре принимает участие {countPlayers} игрока:");
-
             CR(game, countPlayers, name);
-
             Console.WriteLine("Игра начинается...");
 
-
             //Массив всех карт.
-            Card[] allCardsMassive = new Card [] { tomatoCardEx1, tomatoCardEx2, tomatoCardEx3,
-                                                   tomatoCardEx4, tomatoCardEx5, tomatoCardEx6,
-                                                   tomatoCardEx7, tomatoCardEx8, tomatoCardEx9};
+            List<Card> CardsForGameList = new List<Card>();
+            CardsForGameList.AddRange(TomatoCards);
+            CardsForGameList.AddRange(PepperCards);
+            CardsForGameList.AddRange(LettuceCards);
+            CardsForGameList.AddRange(CabbageCards);
+            CardsForGameList.AddRange(OnionCards);
+            CardsForGameList.AddRange(CarrotCards);
+
 
             //Перемешиваем все карты.
             var rand = new Random();
-            for (int i = allCardsMassive.Length-1; i >= 1; i--)
+            for (int i = CardsForGameList.Count - 1; i >= 1; i--)
             {
-                int j = rand.Next(i+1);
-                Card tmp = allCardsMassive[j];
-                allCardsMassive[j] = allCardsMassive[i];
-                allCardsMassive[i] = tmp;
+                int j = rand.Next(i + 1);
+                Card temp = CardsForGameList[j];
+                CardsForGameList[j] = CardsForGameList[i];
+                CardsForGameList[i] = temp;
             }
 
-            Stack<Card> allCardsStack = new Stack<Card>(allCardsMassive);
-
-            Index index0 = 0;
-            Index index1 = 1;
-            Index index2 = 2;
+            Stack<Card> allCardsStack = new Stack<Card>(CardsForGameList);
 
             //Три колонки карт - рецепт + 2 овоща.
             Card[] column1 = new Card[3];
@@ -205,6 +355,7 @@ namespace PointSalad_App
             restart:
             if (alive)
             {
+                Console.WriteLine($"Начинается раунд {game.roundCounter}");    
                 foreach (var player in game.players)
                 {
                     #region Раскладка
@@ -271,9 +422,13 @@ namespace PointSalad_App
                     Console.WriteLine();
                     #endregion
 
-                    Console.WriteLine($"Ходит игрок {player.iD}.....");
-                    Console.WriteLine();
-                    Console.WriteLine($"салат: {player.lettuceStack}\n");
+                    player.Scoring(game.players.IndexOf(player) + 1);
+                    Console.WriteLine(player.Score);
+
+                    player.ShowInfo(game.players.IndexOf(player)+1);
+
+                    
+
                     ConsoleColor color = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
                     Console.WriteLine("1. Взять карту рецепта \t 2. Взять два овоща  \t 3. Выйти из программы");
@@ -282,12 +437,12 @@ namespace PointSalad_App
                     
                     try
                     {
-                        int command1 = Convert.ToInt32(Console.ReadLine());
+                        int command1 = int.Parse(Console.ReadLine());
                         switch (command1)
                         {
                             case 1:
                                 Console.WriteLine("Введи номер карты рецепта, которую хочешь взять: ");
-                                int command2 = Convert.ToInt32(Console.ReadLine());
+                                int command2 = int.Parse(Console.ReadLine());
                                 switch (command2)
                                 {
                                     case 1:
@@ -593,32 +748,16 @@ namespace PointSalad_App
                         Console.ForegroundColor = color;
                     }
                 }
-                Card[] cardsInPlay = new Card[9];
+                
 
-                for (int k = 0, i = 0; i <= 2; i++, k++)
-                {
-                //    cardsInPlay[k] = column1[i];
-                //    k++;
-                //    cardsInPlay[k] = column2[i];
-                //    k++;
-                //    cardsInPlay[k] = column3[i];
-                }
-                //bool isAlive2 = CheckGameContinue(cardsInPlay);
                 if (alive)
-                {
+                    game.roundCounter ++;
                     goto restart;
-                }
-                //else
-                //{
-                //    alive = false;
-
-                //}
             }
 
-            for (int i = 0; i <= game.players.Count - 1; i++)
+            for (int i = 1; i <= game.players.Count - 1; i++)
                {
-                 game.players[i].Scoring();
-                 Console.WriteLine($"Игрок {i + 1} набрал {game.players[i].Scoring()}");
+                    Scoring(game, i);
                }
                 Console.ReadLine();
             
