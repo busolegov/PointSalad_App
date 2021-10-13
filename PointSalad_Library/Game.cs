@@ -62,6 +62,7 @@ namespace PointSalad_Library
             Console.WriteLine($"томат: {players[iD].TomatoStack}");
             Console.WriteLine($"морковь: {players[iD].CarrotStack}");
             Console.WriteLine("---------------------------------------------------------------");
+            Console.WriteLine("---------------------------------------------------------------");
             foreach (Card questCards in players[iD].QuestStack)
             {
                 Console.WriteLine(questCards.QuestText);

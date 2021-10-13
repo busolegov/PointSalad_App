@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public class OnionCardEx1 : OnionCards
+    public class OnionCardEx1 : Card
     {
         public string text = "+2/(томат) -2/(капуста) -2(перец)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.TomatoStack;
@@ -17,10 +19,12 @@ namespace PointSalad_Library
             player.Score -= 2 * player.PepperStack;
         }
     }
-    public class OnionCardEx2 : OnionCards
+    public class OnionCardEx2 : Card
     {
         public string text = "+2/(томат) +2/(салат) -4(морковь)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.TomatoStack;
@@ -28,10 +32,12 @@ namespace PointSalad_Library
             player.Score -= 4 * player.CarrotStack;
         }
     }
-    public class OnionCardEx3 : OnionCards
+    public class OnionCardEx3 : Card
     {
         public string text = "+2/(томат) +1/(морковь) -2(лук)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.TomatoStack;
@@ -39,10 +45,12 @@ namespace PointSalad_Library
             player.Score -= 2 * player.OnionStack;
         }
     }
-    public class OnionCardEx4 : OnionCards
+    public class OnionCardEx4 : Card
     {
         public string text = "+3/(томат) -1/(морковь) -1(лук)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.CabbageStack;
@@ -50,19 +58,23 @@ namespace PointSalad_Library
             player.Score -= player.OnionStack;
         }
     }
-    public class OnionCardEx5 : OnionCards
+    public class OnionCardEx5 : Card
     {
         public string text = "+8/(3 томата)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 8 * (player.TomatoStack % 3);
         }
     }
-    public class OnionCardEx6 : OnionCards
+    public class OnionCardEx6 : Card
     {
         public string text = "+7/(лук + томат + перец)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             if (player.OnionStack < player.TomatoStack)
@@ -82,10 +94,12 @@ namespace PointSalad_Library
         }
     }
     
-    public class OnionCardEx7 : OnionCards
+    public class OnionCardEx7 : Card
     {
         public string text = "+7/(чётн. томата) +3/(нечетн. томата)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
                 if (player.TomatoStack % 2 == 0)
@@ -94,10 +108,12 @@ namespace PointSalad_Library
                     player.Score += 3;
         }
     }
-    public class OnionCardEx8 : OnionCards
+    public class OnionCardEx8 : Card
     {
         public string text = "+7/(капуста + томат + салат)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             if (player.CabbageStack < player.TomatoStack)
@@ -116,10 +132,12 @@ namespace PointSalad_Library
                 player.Score += 7 * player.TomatoStack;
         }
     }
-    public class OnionCardEx9 : OnionCards
+    public class OnionCardEx9 : Card
     {
         public string text = "+3/(томат) -2/(салат)";
+        public string type = "лук";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.TomatoStack;

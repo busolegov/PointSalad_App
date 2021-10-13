@@ -12,14 +12,14 @@ namespace PointSalad_Library
     /// </summary>
     public abstract class Card : IEnumerable
     {
-        public abstract void Quest();
-        public abstract string Type { get; set; }
-
+        public virtual void Quest(Game<Player> game, Player player) { }
+        public virtual void Quest() { }
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable)QuestText).GetEnumerator();
         }
+        public abstract string Type { get; set; }
 
-        public virtual string QuestText { get; set; }
+        public abstract string QuestText { get; set; }
     }
 }

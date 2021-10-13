@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public class PepperCardEx1 : PepperCards
+    public class PepperCardEx1 : Card
     {
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public string text = "+4/(салат) & -2/(томат) & -2/(капуста)";
         public override string QuestText { get => text; set => text = value; }
+
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 4 * player.LetucceStack;
@@ -18,10 +21,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class PepperCardEx2 : PepperCards
+    public class PepperCardEx2 : Card
     {
         public string text = "+2/(салат) & +1/(лук) & -2/(перец)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.LetucceStack;
@@ -30,10 +35,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class PepperCardEx3 : PepperCards
+    public class PepperCardEx3 : Card
     {
         public string text = "+3/(салат) & -1/(лук) & -1/(перец)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.LetucceStack;
@@ -42,10 +49,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class PepperCardEx4 : PepperCards
+    public class PepperCardEx4 : Card
     {
         public string text = "+2/(салат) & +2/(морковь) & -4/(лук)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.LetucceStack;
@@ -54,20 +63,24 @@ namespace PointSalad_Library
         }
     }
 
-    public class PepperCardEx5 : PepperCards
+    public class PepperCardEx5 : Card
     {
         public string text = "+8/(три салата)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 8 * (player.OnionStack % 3);
         }
     }
 
-    public class PepperCardEx6 : PepperCards
+    public class PepperCardEx6 : Card
     {
         public string text = "+7/(перец + салат + капуста";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             if (player.PepperStack < player.LetucceStack)
@@ -86,13 +99,15 @@ namespace PointSalad_Library
                 player.Score += 7 * player.CabbageStack;
         }
     }
-    public class PepperCardEx7 : PepperCards
+    public class PepperCardEx7 : Card
     {
         public string text = "+7/(чётн. салата) +3/(нечетн. салата)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            if (player.LetucceStack % 2 == 0)
+            if (player.PepperStack % 2 == 0)
             {
                 player.Score += 7;
             }
@@ -101,10 +116,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class PepperCardEx8 : PepperCards
+    public class PepperCardEx8 : Card
     {
         public string text = "+1/(салат) +1/(лук)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += player.LetucceStack;
@@ -112,10 +129,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class PepperCardEx9 : PepperCards
+    public class PepperCardEx9 : Card
     {
         public string text = "+7/(томат + салат + морковь)";
         public override string QuestText { get => text; set => text = value; }
+        private string type = "перец";
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             if (player.TomatoStack < player.LetucceStack)

@@ -355,7 +355,8 @@ namespace PointSalad_App
             restart:
             if (alive)
             {
-                Console.WriteLine($"Начинается раунд {game.roundCounter}");    
+                Console.WriteLine($"Начинается раунд {game.roundCounter}");
+                Console.WriteLine();
                 foreach (var player in game.players)
                 {
                     #region Раскладка
@@ -422,12 +423,14 @@ namespace PointSalad_App
                     Console.WriteLine();
                     #endregion
 
-                    player.Scoring(game.players.IndexOf(player) + 1);
-                    Console.WriteLine(player.Score);
-
                     player.ShowInfo(game.players.IndexOf(player)+1);
-
-                    
+                    foreach (var card in player.QuestStack)
+                    {
+                        card.Quest(game, player);
+                    }
+                    Console.WriteLine(player.Score);
+                    player.Score = 0;
+                    Console.WriteLine();
 
                     ConsoleColor color = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
@@ -437,12 +440,34 @@ namespace PointSalad_App
                     
                     try
                     {
-                        int command1 = int.Parse(Console.ReadLine());
+                        int command1;
+                        while (true)
+                        {
+                            if (int.TryParse(Console.ReadLine(), out command1) & (command1 >= 1 & command1 <= 3))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Неверный формат или выбрана ошибочная команда.");
+                            }
+                        }
                         switch (command1)
                         {
                             case 1:
                                 Console.WriteLine("Введи номер карты рецепта, которую хочешь взять: ");
-                                int command2 = int.Parse(Console.ReadLine());
+                                int command2;
+                                while (true)
+                                {
+                                    if (int.TryParse(Console.ReadLine(), out command2) & (command2 >= 1 & command2 <= 3))
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Неверный формат или выбрана ошибочная команда.");
+                                    }
+                                }
                                 switch (command2)
                                 {
                                     case 1:
@@ -719,6 +744,7 @@ namespace PointSalad_App
                                 }
                                 break;
                         }
+
                         Card[] cardsInPlayPre = new Card[9];
 
                         for (int k = 0, i = 0; i <= 2; i++, k++)
@@ -748,19 +774,22 @@ namespace PointSalad_App
                         Console.ForegroundColor = color;
                     }
                 }
-                
 
                 if (alive)
                     game.roundCounter ++;
                     goto restart;
             }
-
-            for (int i = 1; i <= game.players.Count - 1; i++)
-               {
-                    Scoring(game, i);
-               }
-                Console.ReadLine();
-            
+            //Подсчет очков
+            for (int i = 0; i <= game.players.Count - 1; i++)
+            {
+                game.players[i].Score = 0;
+                foreach (var card in game.players[i].QuestStack)
+                {
+                    card.Quest(game, game.players[i]);
+                }
+                Console.WriteLine($"Игрок {i+1} набрал {game.players[i].Score}");
+            }
+            Console.ReadLine();
         }
     }
 }

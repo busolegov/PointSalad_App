@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public class LettuceCardEx1 : LettuceCards
+    public class LettuceCardEx1 : Card
     {
-        private string text = "+2/(перец) +2/(капуста) -4/(томат)";
+        public string type = "салат";
+        public string text = "+2/(перец) +2/(капуста) -4/(томат)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -19,10 +21,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx2 : LettuceCards
+    public class LettuceCardEx2 : Card
     {
-        private string text = "+4/(перец) -2/(лук) -2/(морковь)";
+        public string type = "салат";
+        public string text = "+4/(перец) -2/(лук) -2/(морковь)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -32,10 +36,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx3 : LettuceCards
+    public class LettuceCardEx3 : Card
     {
-        private string text = "+3/(морковь) -1/(томат) -1/(салат)";
+        public string type = "салат";
+        public string text = "+3/(морковь) -1/(томат) -1/(салат)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -45,10 +51,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx4 : LettuceCards
+    public class LettuceCardEx4 : Card
     {
-        private string text = "+2/(перец) +1/(томат) -2/(салат)";
+        public string type = "салат";
+        public string text = "+2/(перец) +1/(томат) -2/(салат)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -58,10 +66,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx5 : LettuceCards
+    public class LettuceCardEx5 : Card
     {
-        private string text = "+7/(морковь + перец + капуста)";
+        public string type = "салат";
+        public string text = "+7/(морковь + перец + капуста)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -82,10 +92,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx6 : LettuceCards
+    public class LettuceCardEx6 : Card
     {
-        private string text = "+8/(3 перца)";
+        public string type = "салат";
+        public string text = "+8/(3 перца)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -93,10 +105,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx7 : LettuceCards
+    public class LettuceCardEx7 : Card
     {
-        private string text = "+7/(чётн. перцев) +3/(нечетн. перцев)";
+        public string type = "салат";
+        public string text = "+7/(чётн. перцев) +3/(нечетн. перцев)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -107,10 +121,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx8 : LettuceCards
+    public class LettuceCardEx8 : Card
     {
-        private string text = "+3/(перец) -2/(капуста)";
+        public string type = "салат";
+        public string text = "+3/(перец) -2/(капуста)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
@@ -119,10 +135,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class LettuceCardEx9 : LettuceCards
+    public class LettuceCardEx9 : Card
     {
-        private string text = "+7/(салат + перец + морковь)";
+        public string type = "салат";
+        public string text = "+7/(салат + перец + морковь)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {

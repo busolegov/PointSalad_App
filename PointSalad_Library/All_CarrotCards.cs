@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace PointSalad_Library
 {
-    public class CarrotCardEx1 : CarrotCards
+    public class CarrotCardEx1 : Card
     {
+        public string type = "морковь";
         public string text = "+4/(капуста) -2/(перец) -2(лук)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 4 * player.CabbageStack;
@@ -18,10 +20,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class CarrotCardEx2 : CarrotCards
+    public class CarrotCardEx2 : Card
     {
+        public string type = "морковь";
         public string text = "+2/(капуста) +2/(томат) -4(салат)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.CabbageStack;
@@ -30,10 +34,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class CarrotCardEx3 : CarrotCards
+    public class CarrotCardEx3 : Card
     {
+        public string type = "морковь";
         public string text = "+3/(капуста) -1/(салат) -1(морковь)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.CabbageStack;
@@ -42,10 +48,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class CarrotCardEx4 : CarrotCards
+    public class CarrotCardEx4 : Card
     {
+        public string type = "морковь";
         public string text = "+2/(капуста) +1/(салат) -2(морковь)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 2 * player.CabbageStack;
@@ -54,20 +62,24 @@ namespace PointSalad_Library
         }
     }
 
-    public class CarrotCardEx5 : CarrotCards
+    public class CarrotCardEx5 : Card
     {
+        public string type = "морковь";
         public string text = "+8/(3 капусты)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 8 * (player.CabbageStack % 3);
         }
     }
 
-    public class CarrotCardEx6 : CarrotCards
+    public class CarrotCardEx6 : Card
     {
+        public string type = "морковь";
         public string text = "+7/(чётн. капуста) +3/(нечетн. капусты)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             if (player.CabbageStack % 2 == 0)
@@ -77,20 +89,24 @@ namespace PointSalad_Library
         }
     }
 
-    public class CarrotCardEx7 : CarrotCards
+    public class CarrotCardEx7 : Card
     {
+        public string type = "морковь";
         public string text = "+7/(перец + капуста + томат)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             
         }
     }
 
-    public class CarrotCardEx8 : CarrotCards
+    public class CarrotCardEx8 : Card
     {
+        public string type = "морковь";
         public string text = "+7/(морковь + капуста + лук)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             if (player.CarrotStack < player.OnionStack)
@@ -108,10 +124,12 @@ namespace PointSalad_Library
         }
     }
 
-    public class CarrotCardEx9 : CarrotCards
+    public class CarrotCardEx9 : Card
     {
+        public string type = "морковь";
         public string text = "+3/(капуста) -2/(томат)";
         public override string QuestText { get => text; set => text = value; }
+        public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.CabbageStack;

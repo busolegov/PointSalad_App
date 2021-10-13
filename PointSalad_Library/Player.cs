@@ -113,9 +113,9 @@ namespace PointSalad_Library
         {
             foreach (var card in QuestStack)
             {
-                card.Quest(Game<T>game, );
+                card.Quest();
             }
-            OnHasScoring(new AccountEventArgs($"Игрок {iD} набрал " + Score + "\n--------------------"), iD);
+            OnHasScoring(new AccountEventArgs($"Очков у игрока: " + Score + "\n--------------------"), iD);
         }
 
         public Player()
@@ -177,6 +177,7 @@ namespace PointSalad_Library
         public void ShowInfo(int iD)
         {
             Console.WriteLine("---------------------------------------------------------------");
+
             Console.WriteLine($"Ходит игрок {iD}.....");
             Console.WriteLine();
 
@@ -189,7 +190,7 @@ namespace PointSalad_Library
             Console.WriteLine("---------------------------------------------------------------");
             foreach (Card questCards in QuestStack)
             {
-                if (QuestStack == null)
+                if (QuestStack.Count == 0)
                 {
                     Console.WriteLine("Нет карт рецептов");
                 } 
@@ -197,7 +198,7 @@ namespace PointSalad_Library
                 else
                     Console.WriteLine(questCards.QuestText);
             }
-            Console.WriteLine("---------------------------------------------------------------");
+
             Console.WriteLine("---------------------------------------------------------------");
         }
     }
