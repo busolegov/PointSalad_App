@@ -97,18 +97,20 @@ namespace PointSalad_Library
 
     public class TomatoCardEx7 : Card
     {
-        public string type = "томат";
-        public string text = "+10/(больше всех лука)";
+        private string type = "томат";
+        private string text = "+10/(больше всех лука)";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game <Player>game, Player player)
         {
-            List<int> l = new List<int>();
-            foreach (var item in game.players)      //TODO
+            foreach (var person in game.players)
             {
-                l.Add(item.OnionStack);
+                if (player.OnionStack >= person.OnionStack)
+                {
+                    player.Score += 10;
+                }
+                break;
             }
-            l.Max();
         }
 
     }
@@ -121,12 +123,14 @@ namespace PointSalad_Library
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            List<int> l = new List<int>();
-            foreach (var item in game.players)      //TODO
+            foreach (var person in game.players)
             {
-                l.Add(item.OnionStack);
+                if (player.OnionStack <= person.OnionStack)
+                {
+                    player.Score += 7;
+                }
+                break;
             }
-            l.Max();
         }
 
     }

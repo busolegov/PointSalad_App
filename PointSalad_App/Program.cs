@@ -7,10 +7,6 @@ namespace PointSalad_App
 {
     class Program
     {
-        public static void Scoring(Game <Player> game, int iD) 
-        {
-            game.Scoring(iD);
-        }
         public static void TakeQuest(Game <Player> game, Card card, int iD)
         {
             game.TakeQuest(card, iD);
@@ -18,10 +14,6 @@ namespace PointSalad_App
         public static void TakeVegetable(Game<Player> game, Card card, int iD) 
         {
             game.TakeVegetable(card, iD);
-        }
-        public static void ScoringHandler(object sender, AccountEventArgs e) 
-        {
-            Console.WriteLine(e.Message);
         }
 
         public static void CreatePlayerHandler(object sender, AccountEventArgs e) 
@@ -38,7 +30,7 @@ namespace PointSalad_App
         }
         public static void CR(Game <Player> game, int cp, string name)
         {
-            game.CreatePlayer(ScoringHandler, CreatePlayerHandler, TakeQuestHandler, TakeVegetableHandler, cp, name);
+            game.CreatePlayer(CreatePlayerHandler, TakeQuestHandler, TakeVegetableHandler, cp, name);
         }
 
         /// <summary>
@@ -60,6 +52,7 @@ namespace PointSalad_App
             }
             return massive;
         }
+
         /// <summary>
         /// Метод, заменяющий пустые овощи на рецепты
         /// </summary>
@@ -87,6 +80,7 @@ namespace PointSalad_App
             }
             return massive;
         }
+
         /// <summary>
         /// Метод, проверяющий закончились ли карты на поле.
         /// </summary>
@@ -106,27 +100,81 @@ namespace PointSalad_App
             return isGoing;
         }
 
-        public static void MixCardsForGame(int count, List<Card> Massive1, Card[] Massive2, Card[] Massive3,
-                                            Card[] Massive4, Card[] Massive5, Card[] Massive6) 
+        /// <summary>
+        /// Метод, отбирающий карты для игры, в зависимости от количества игроков.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="list1"></param>
+        /// <param name="list2"></param>
+        /// <param name="list3"></param>
+        /// <param name="list4"></param>
+        /// <param name="list5"></param>
+        /// <param name="list6"></param>
+        /// <returns></returns>
+        public static List<Card> MixCardsForGame(int count, List<Card> list1, List<Card> list2, List<Card> list3,
+                                            List<Card> list4, List<Card> list5, List<Card> list6) 
         {
-            //Random rndm = new Random();
-            //for (int i = 0; i < count; i++)
-            //{
-            //    for (int k = 0; k < count; k++)
-            //    {
-            //        int j = rndm.Next(0, Massive1.Length-k);
-            //    }
-            //}
+            List<Card> tmp1 = new List<Card>();
+            List<Card> tmp2 = new List<Card>();
+            List<Card> tmp3 = new List<Card>();
+            List<Card> tmp4 = new List<Card>();
+            List<Card> tmp5 = new List<Card>();
+            List<Card> tmp6 = new List<Card>();
 
             Random rand = new Random();
-            for (int i = Massive1.Count; i >= Massive1.Count - count ; i--)
+            int cardsQuantity = list1.Count - 1;
+            for (int i = 0; i < (count-1)*6 ; i++)
             {
-                int j = rand.Next(0, i);
-                List<Card> tmp = new List<Card>();
-                tmp.Add(Massive1[j]);
-                Massive1.RemoveAt(j);
-            }
+                int j = rand.Next(0, cardsQuantity);
+                tmp1.Add(list1[j]);
+                list1.RemoveAt(j);
 
+                int k = rand.Next(0, cardsQuantity);
+                tmp2.Add(list2[k]);
+                list2.RemoveAt(k);
+
+                int o = rand.Next(0, cardsQuantity);
+                tmp3.Add(list3[o]);
+                list3.RemoveAt(o);
+
+                int p = rand.Next(0, cardsQuantity);
+                tmp4.Add(list4[p]);
+                list4.RemoveAt(p);
+
+                int q = rand.Next(0, cardsQuantity);
+                tmp5.Add(list5[q]);
+                list5.RemoveAt(q);
+
+                int r = rand.Next(0, cardsQuantity);
+                tmp6.Add(list6[r]);
+                list6.RemoveAt(r);
+
+                cardsQuantity--;
+            }
+            list1 = tmp1;
+            list2 = tmp2;
+            list3 = tmp3;
+            list4 = tmp4;
+            list5 = tmp5;
+            list6 = tmp6;
+
+            List<Card> CardsForGameList = new List<Card>();
+            CardsForGameList.AddRange(list1);
+            CardsForGameList.AddRange(list2);
+            CardsForGameList.AddRange(list3);
+            CardsForGameList.AddRange(list4);
+            CardsForGameList.AddRange(list5);
+            CardsForGameList.AddRange(list6);
+
+            var rand1 = new Random();
+            for (int i = CardsForGameList.Count - 1; i >= 0; i--)
+            {
+                int j = rand1.Next(i + 1);
+                Card temp = CardsForGameList[j];
+                CardsForGameList[j] = CardsForGameList[i];
+                CardsForGameList[i] = temp;
+            }
+            return CardsForGameList;
         }
 
 
@@ -143,23 +191,19 @@ namespace PointSalad_App
             Card tomatoCardEx4 = new TomatoCardEx4();
             Card tomatoCardEx5 = new TomatoCardEx5();
             Card tomatoCardEx6 = new TomatoCardEx6();
-            //Card tomatoCardEx7 = new TomatoCardEx7();
-            //Card tomatoCardEx8 = new TomatoCardEx8();
+            Card tomatoCardEx7 = new TomatoCardEx7();
+            Card tomatoCardEx8 = new TomatoCardEx8();
             Card tomatoCardEx9 = new TomatoCardEx9();
-
-            //Card[] TomatoMassive = new Card[] { tomatoCardEx1, tomatoCardEx2, tomatoCardEx3,
-            //                                    tomatoCardEx4,tomatoCardEx5,tomatoCardEx6,
-            //                                    tomatoCardEx9};
-
             List<Card> TomatoCards = new List<Card>();
+
             TomatoCards.Add(tomatoCardEx1);
             TomatoCards.Add(tomatoCardEx2);
             TomatoCards.Add(tomatoCardEx3);
             TomatoCards.Add(tomatoCardEx4);
             TomatoCards.Add(tomatoCardEx5);
             TomatoCards.Add(tomatoCardEx6);
-            //TomatoCards.Add(tomatoCardEx7);
-            //TomatoCards.Add(tomatoCardEx8);
+            TomatoCards.Add(tomatoCardEx7);
+            TomatoCards.Add(tomatoCardEx8);
             TomatoCards.Add(tomatoCardEx9);
             #endregion
 
@@ -173,10 +217,6 @@ namespace PointSalad_App
             Card pepperCardEx7 = new PepperCardEx2();
             Card pepperCardEx8 = new PepperCardEx2();
             Card pepperCardEx9 = new PepperCardEx2();
-
-            //Card [] PepperMassive = new Card [] { pepperCardEx1, pepperCardEx2, pepperCardEx3,
-            //                                      pepperCardEx4, pepperCardEx5, pepperCardEx6,
-            //                                      pepperCardEx7, pepperCardEx8, pepperCardEx9};
 
             List<Card> PepperCards = new List<Card>();
             PepperCards.Add(pepperCardEx1);
@@ -201,9 +241,6 @@ namespace PointSalad_App
             Card lettuceCardEx8 = new LettuceCardEx8();
             Card lettuceCardEx9 = new LettuceCardEx9();
 
-            //Card[] LettuceMassive = new Card[] { lettuceCardEx1, lettuceCardEx2, lettuceCardEx3,
-            //                                      lettuceCardEx4, lettuceCardEx5, lettuceCardEx6,
-            //                                      lettuceCardEx7, lettuceCardEx8, lettuceCardEx9};
             List<Card> LettuceCards = new List<Card>();
             LettuceCards.Add(lettuceCardEx1);
             LettuceCards.Add(lettuceCardEx2);
@@ -227,9 +264,6 @@ namespace PointSalad_App
             Card cabbageCardEx8 = new CabbageCardEx8();
             Card cabbageCardEx9 = new CabbageCardEx9();
 
-            //Card[] CabbageMassive = new Card[] { pepperCardEx1, pepperCardEx2, pepperCardEx3,
-            //                                     pepperCardEx4, pepperCardEx5, pepperCardEx6,
-            //                                     pepperCardEx7, pepperCardEx8, pepperCardEx9};
             List<Card> CabbageCards = new List<Card>();
             CabbageCards.Add(cabbageCardEx1);
             CabbageCards.Add(cabbageCardEx2);
@@ -254,10 +288,6 @@ namespace PointSalad_App
             Card onionCardEx8 = new OnionCardEx8();
             Card onionCardEx9 = new OnionCardEx9();
 
-            //Card[] OnionMassive = new Card[] { onionCardEx1, onionCardEx2, onionCardEx3,
-            //                                   onionCardEx4, onionCardEx5, onionCardEx6,
-            //                                   onionCardEx7, onionCardEx8, onionCardEx9};
-
             List<Card> OnionCards = new List<Card>();
             OnionCards.Add(onionCardEx1);
             OnionCards.Add(onionCardEx2);
@@ -280,10 +310,6 @@ namespace PointSalad_App
             Card carrotCardEx7 = new CarrotCardEx7();
             Card carrotCardEx8 = new CarrotCardEx8();
             Card carrotCardEx9 = new CarrotCardEx9();
-
-            //Card[] CarroteMassive = new Card[] { carrotCardEx1, carrotCardEx2, carrotCardEx3,
-            //                                     carrotCardEx4, carrotCardEx5, carrotCardEx6,
-            //                                     carrotCardEx7, carrotCardEx8, carrotCardEx9};
 
             List<Card> CarrotCards = new List<Card>();
             CarrotCards.Add(carrotCardEx1);
@@ -318,27 +344,8 @@ namespace PointSalad_App
             CR(game, countPlayers, name);
             Console.WriteLine("Игра начинается...");
 
-            //Массив всех карт.
-            List<Card> CardsForGameList = new List<Card>();
-            CardsForGameList.AddRange(TomatoCards);
-            CardsForGameList.AddRange(PepperCards);
-            CardsForGameList.AddRange(LettuceCards);
-            CardsForGameList.AddRange(CabbageCards);
-            CardsForGameList.AddRange(OnionCards);
-            CardsForGameList.AddRange(CarrotCards);
-
-
-            //Перемешиваем все карты.
-            var rand = new Random();
-            for (int i = CardsForGameList.Count - 1; i >= 1; i--)
-            {
-                int j = rand.Next(i + 1);
-                Card temp = CardsForGameList[j];
-                CardsForGameList[j] = CardsForGameList[i];
-                CardsForGameList[i] = temp;
-            }
-
-            Stack<Card> allCardsStack = new Stack<Card>(CardsForGameList);
+            Stack<Card> allCardsStack = new Stack<Card>(MixCardsForGame(countPlayers, TomatoCards, CarrotCards,
+                                                        OnionCards, CabbageCards, PepperCards, LettuceCards));
 
             //Три колонки карт - рецепт + 2 овоща.
             Card[] column1 = new Card[3];
@@ -351,6 +358,7 @@ namespace PointSalad_App
                 column2[i] = allCardsStack.Pop();
                 column3[i] = allCardsStack.Pop();
             }
+
             bool alive = true;
             restart:
             if (alive)
@@ -414,13 +422,13 @@ namespace PointSalad_App
                         place9 = emptySpace;
                     else
                         place9 = column3[2].Type;
-
-                    Console.WriteLine("1. " + place1 + "\t 2. " + place2 + "\t 3. " + place3);
-                    Console.WriteLine("--------------------------------------------------------------------------------");
+                    Console.WriteLine("#############################################################");
+                    Console.WriteLine("1. " + place1 + "   2. " + place2 + "   3. " + place3);
+                    Console.WriteLine("#############################################################");
                     Console.WriteLine("1. " + place4 + "\t 2. " + place5 + "\t 3. " + place6);
                     Console.WriteLine();
                     Console.WriteLine("4. " + place7 + "\t 5. " + place8 + "\t 6. " + place9);
-                    Console.WriteLine();
+                    Console.WriteLine("#############################################################");
                     #endregion
 
                     player.ShowInfo(game.players.IndexOf(player)+1);
@@ -428,6 +436,7 @@ namespace PointSalad_App
                     {
                         card.Quest(game, player);
                     }
+
                     Console.WriteLine(player.Score);
                     player.Score = 0;
                     Console.WriteLine();
@@ -531,17 +540,31 @@ namespace PointSalad_App
                                 break;
                             case 2:
                                 Console.WriteLine("Введите карту первого овоща:");
-                                int command3 = Convert.ToInt32(Console.ReadLine());
-                                Console.WriteLine("Введите карту второго овоща:");
-                                int command4 = Convert.ToInt32(Console.ReadLine());
-
-                                if (command3 == command4)
+                                int command3;
+                                while (true)
                                 {
-                                    Console.WriteLine("Этот овощ уже взят тобой. Выбери другой.");
-                                    Console.WriteLine();
+                                    if (int.TryParse(Console.ReadLine(), out command3) & (command3 >= 1 & command3 <= 6))
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Неверный формат или такого овоща нет.");
+                                    }
                                 }
-                                else
+                                Console.WriteLine("Введите карту второго овоща:");
+                                int command4;
+                                while (true)
                                 {
+                                    if (int.TryParse(Console.ReadLine(), out command4) & (command4 >= 1 & command4 <= 6) & (command4 != command3))
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Неверный формат, взят два раза один и тот же овощ или такого овоща нет.");
+                                    }
+                                }
                                     switch (command3)
                                     {
                                         case 1:
@@ -641,6 +664,27 @@ namespace PointSalad_App
                                             }
                                             break;
                                     }
+                                    #region Проверка - все карты закончились?
+                                    Card[] cardsInPlayPrePre = new Card[9];
+
+                                    for (int k = 0, i = 0; i <= 2; i++, k++)
+                                    {
+                                        cardsInPlayPrePre[k] = column1[i];
+                                        k++;
+                                        cardsInPlayPrePre[k] = column2[i];
+                                        k++;
+                                        cardsInPlayPrePre[k] = column3[i];
+                                    }
+                                    bool isAlive2 = CheckGameContinue(cardsInPlayPrePre);
+                                    if (isAlive2)
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        alive = false;
+                                    }
+                                    #endregion
                                     switch (command4)
                                     {
                                         case 1:
@@ -741,10 +785,10 @@ namespace PointSalad_App
                                             break;
                                     }
                                     break;
-                                }
-                                break;
+                            case 3:
+                                goto Scoring;
                         }
-
+                        #region Проверка - все карты закончились?
                         Card[] cardsInPlayPre = new Card[9];
 
                         for (int k = 0, i = 0; i <= 2; i++, k++)
@@ -764,6 +808,7 @@ namespace PointSalad_App
                         {
                             alive = false;
                         }
+                        #endregion
                     }
                     catch (Exception ex)
                     {
@@ -774,11 +819,12 @@ namespace PointSalad_App
                         Console.ForegroundColor = color;
                     }
                 }
-
                 if (alive)
                     game.roundCounter ++;
                     goto restart;
             }
+
+            Scoring:
             //Подсчет очков
             for (int i = 0; i <= game.players.Count - 1; i++)
             {
@@ -787,7 +833,7 @@ namespace PointSalad_App
                 {
                     card.Quest(game, game.players[i]);
                 }
-                Console.WriteLine($"Игрок {i+1} набрал {game.players[i].Score}");
+                Console.WriteLine($"Игрок {i+1} набрал {game.players[i].Score} очков.");
             }
             Console.ReadLine();
         }

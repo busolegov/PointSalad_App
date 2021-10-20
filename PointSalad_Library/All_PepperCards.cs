@@ -10,7 +10,7 @@ namespace PointSalad_Library
     {
         private string type = "перец";
         public override string Type { get => type; set => type = value; }
-        public string text = "+4/(салат) & -2/(томат) & -2/(капуста)";
+        public string text = "+4/(салат) -2/(томат) -2/(капуста)";
         public override string QuestText { get => text; set => text = value; }
 
         public override void Quest(Game<Player> game, Player player)

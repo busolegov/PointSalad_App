@@ -8,8 +8,8 @@ namespace PointSalad_Library
 {
     public class CabbageCardEx1 : Card
     {
-        public string type = "капуста";
-        public string text = "+4/(морковь) -2/(салат) -2/(томат)";
+        private string type = "капуста";
+        private string text = "+4/(морковь) -2/(салат) -2/(томат)";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
 
@@ -109,7 +109,7 @@ namespace PointSalad_Library
     }
     public class CabbageCardEx7 : Card
     {
-        public string text = "+3/(морковь) & -1/(перец) & -1/(капуста)";
+        public string text = "+3/(морковь) -1/(перец) -1/(капуста)";
         public string type = "капуста";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
@@ -123,7 +123,7 @@ namespace PointSalad_Library
 
     public class CabbageCardEx8 : Card
     {
-        public string text = "+3/(морковь) & -1/(перец) & -1/(капуста)";
+        public string text = "+3/(морковь) -1/(перец) -1/(капуста)";
         public string type = "капуста";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
@@ -137,7 +137,7 @@ namespace PointSalad_Library
 
     public class CabbageCardEx9 : Card
     {
-        public string text = "+3/(морковь) & -1/(перец) & -1/(капуста)";
+        public string text = "+3/(морковь) -1/(перец) -1/(капуста)";
         public string type = "капуста";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
@@ -149,6 +149,7 @@ namespace PointSalad_Library
         }
     }
 }
+
 
 
 
