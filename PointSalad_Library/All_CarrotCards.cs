@@ -97,7 +97,18 @@ namespace PointSalad_Library
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            
+            if (player.PepperStack < player.TomatoStack)
+            {
+                if (player.PepperStack < player.CabbageStack)
+                {
+                    player.Score += 7 * player.PepperStack;
+                }
+                else
+                if (player.CabbageStack < player.TomatoStack)
+                    player.Score += 7 * player.CabbageStack;
+            }
+            else
+                player.Score += 7 * player.TomatoStack;
         }
     }
 

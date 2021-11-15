@@ -21,10 +21,5 @@ namespace PointSalad_Library
         /// </summary>
         /// <param name="card"></param>
         void TakeVegetable(Card card);
-        /// <summary>
-        /// Метод подсчета очков за карты рецептов.
-        /// </summary>
-        void Scoring(int num);
-
     }
 }

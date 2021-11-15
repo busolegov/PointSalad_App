@@ -39,13 +39,13 @@ namespace PointSalad_Library
     public class LettuceCardEx3 : Card
     {
         public string type = "салат";
-        public string text = "+3/(морковь) -1/(томат) -1/(салат)";
+        public string text = "+3/(перец) -1/(томат) -1/(салат)";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
 
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.CarrotStack;
+            player.Score += 3 * player.PepperStack;
             player.Score -= player.TomatoStack;
             player.Score -= player.LetucceStack;
         }

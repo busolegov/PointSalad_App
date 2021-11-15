@@ -53,7 +53,7 @@ namespace PointSalad_Library
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.CabbageStack;
+            player.Score += 3 * player.TomatoStack;
             player.Score -= player.CarrotStack;
             player.Score -= player.OnionStack;
         }
@@ -90,7 +90,7 @@ namespace PointSalad_Library
                 }
             }
             else
-                player.Score += 7 * player.OnionStack;
+                player.Score += 7 * player.TomatoStack;
         }
     }
     

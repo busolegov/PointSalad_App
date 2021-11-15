@@ -109,43 +109,42 @@ namespace PointSalad_Library
     }
     public class CabbageCardEx7 : Card
     {
-        public string text = "+3/(морковь) -1/(перец) -1/(капуста)";
+        public string text = "+7/(чётн. морковь) +3/(нечетн. морковь)";
         public string type = "капуста";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.CarrotStack;
-            player.Score -= player.PepperStack;
-            player.Score -= player.CabbageStack;
+            if (player.CarrotStack % 2 == 0)
+                player.Score += 7;
+            else
+                player.Score += 3;
         }
     }
 
     public class CabbageCardEx8 : Card
     {
-        public string text = "+3/(морковь) -1/(перец) -1/(капуста)";
+        public string text = "+3/(морковь) -2/(лук)";
         public string type = "капуста";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
             player.Score += 3 * player.CarrotStack;
-            player.Score -= player.PepperStack;
-            player.Score -= player.CabbageStack;
+            player.Score -= 2 * player.OnionStack;
         }
     }
 
     public class CabbageCardEx9 : Card
     {
-        public string text = "+3/(морковь) -1/(перец) -1/(капуста)";
+        public string text = "+1/(морковь) +1/(перец)";
         public string type = "капуста";
         public override string QuestText { get => text; set => text = value; }
         public override string Type { get => type; set => type = value; }
         public override void Quest(Game<Player> game, Player player)
         {
-            player.Score += 3 * player.CarrotStack;
-            player.Score -= player.PepperStack;
-            player.Score -= player.CabbageStack;
+            player.Score += player.CarrotStack;
+            player.Score += player.PepperStack;
         }
     }
 }

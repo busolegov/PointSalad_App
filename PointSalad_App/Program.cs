@@ -1,7 +1,6 @@
-﻿using System;
+﻿using PointSalad_Library;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using PointSalad_Library;
 
 namespace PointSalad_App
 {
@@ -86,17 +85,18 @@ namespace PointSalad_App
         /// </summary>
         /// <param name="massive"></param>
         /// <returns></returns>
-        public static bool CheckGameContinue(Card[] massive) 
+        public static bool CheckGameContinue(List<Card> massive) 
         {
             bool isGoing = false;
-            for (int i = 0; i < massive.Length-1; i++)
-            {
-                if (massive[i] != null)
+
+                foreach (var item in massive)
                 {
-                    isGoing = true;
-                    break;
+                    if (item != null)
+                    {
+                        isGoing = true;
+                        break;
+                    }
                 }
-            }
             return isGoing;
         }
 
@@ -123,7 +123,7 @@ namespace PointSalad_App
 
             Random rand = new Random();
             int cardsQuantity = list1.Count - 1;
-            for (int i = 0; i < (count-1)*6 ; i++)
+            for (int i = 0; i < (count-1)*3 ; i++)
             {
                 int j = rand.Next(0, cardsQuantity);
                 tmp1.Add(list1[j]);
@@ -175,6 +175,16 @@ namespace PointSalad_App
                 CardsForGameList[i] = temp;
             }
             return CardsForGameList;
+        }
+
+        /// <summary>
+        /// Метод пердупреждения об ошибке. Красный цвет текста.
+        /// </summary>
+        public static void ShowMessageRed(string mes) 
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(mes);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
 
@@ -337,7 +347,7 @@ namespace PointSalad_App
                 }
                 else
                 {
-                    Console.WriteLine("Неверный формат или количество игроков.");
+                    ShowMessageRed("Неверный формат или количество игроков.");
                 }
             }
             Console.WriteLine($"В игре принимает участие {countPlayers} игрока:");
@@ -360,10 +370,11 @@ namespace PointSalad_App
             }
 
             bool alive = true;
-            restart:
+        restart:
             if (alive)
             {
-                Console.WriteLine($"Начинается раунд {game.roundCounter}");
+                Console.WriteLine();
+                Console.WriteLine($"РАУНД {game.roundCounter}");
                 Console.WriteLine();
                 foreach (var player in game.players)
                 {
@@ -422,43 +433,51 @@ namespace PointSalad_App
                         place9 = emptySpace;
                     else
                         place9 = column3[2].Type;
-                    Console.WriteLine("#############################################################");
+
+                    Console.WriteLine("####################################################################################");
                     Console.WriteLine("1. " + place1 + "   2. " + place2 + "   3. " + place3);
-                    Console.WriteLine("#############################################################");
+                    Console.WriteLine("####################################################################################");
                     Console.WriteLine("1. " + place4 + "\t 2. " + place5 + "\t 3. " + place6);
                     Console.WriteLine();
                     Console.WriteLine("4. " + place7 + "\t 5. " + place8 + "\t 6. " + place9);
-                    Console.WriteLine("#############################################################");
+                    Console.WriteLine("####################################################################################");
                     #endregion
 
-                    player.ShowInfo(game.players.IndexOf(player)+1);
+                    player.ShowInfo(game.players.IndexOf(player) + 1);
                     foreach (var card in player.QuestStack)
                     {
                         card.Quest(game, player);
                     }
 
-                    Console.WriteLine(player.Score);
+                    Console.WriteLine("Промежуточное количество очков: " + player.Score);
                     player.Score = 0;
                     Console.WriteLine();
 
                     ConsoleColor color = Console.ForegroundColor;
-                    Console.ForegroundColor = ConsoleColor.DarkGreen; // выводим список команд зеленым цветом
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine("1. Взять карту рецепта \t 2. Взять два овоща  \t 3. Выйти из программы");
                     Console.WriteLine("Введите номер пункта:");
                     Console.ForegroundColor = color;
-                    
+
                     try
                     {
                         int command1;
                         while (true)
                         {
-                            if (int.TryParse(Console.ReadLine(), out command1) & (command1 >= 1 & command1 <= 3))
+                            if (int.TryParse(Console.ReadLine(), out command1) & command1 >= 1 & command1 <= 3)
                             {
+                                if (column1[0] == null & column2[0] == null & column3[0] == null)
+                                {
+                                    ShowMessageRed("Рецепты закончились, возьми овощи.");
+                                    command1 = 2;
+                                    break;
+                                }
                                 break;
                             }
                             else
                             {
-                                Console.WriteLine("Неверный формат или выбрана ошибочная команда.");
+                                ShowMessageRed("Неверный формат, выбрана ошибочная команда.");
+                                continue;
                             }
                         }
                         switch (command1)
@@ -468,72 +487,34 @@ namespace PointSalad_App
                                 int command2;
                                 while (true)
                                 {
-                                    if (int.TryParse(Console.ReadLine(), out command2) & (command2 >= 1 & command2 <= 3))
+                                    Card[] tempQuestMassive = new Card[] { column1[0], column2[0], column3[0] };
+                                    if (int.TryParse(Console.ReadLine(), out command2) && command2 >= 1 && command2 <= 3 && tempQuestMassive[command2 - 1] != null)
                                     {
                                         break;
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Неверный формат или выбрана ошибочная команда.");
+                                        ShowMessageRed("Неверный формат, выбрана ошибочная команда или такой карты нет.");
                                     }
                                 }
                                 switch (command2)
                                 {
                                     case 1:
                                         {
-                                            try
-                                            {
-                                                TakeQuest(game, column1[0], player.iD - 1);
-                                            }
-                                            catch (Exception)
-                                            {
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Такой карты рецепта нет, выбери другую");
-                                                Console.WriteLine();
-                                                Console.ResetColor();
-                                            }
-                                            finally
-                                            {
-                                                column1 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column1);
-                                            }
+                                            TakeQuest(game, column1[0], player.iD - 1);
+                                            column1 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column1);
                                             continue;
                                         }
                                     case 2:
                                         {
-                                            try
-                                            {
-                                                TakeQuest(game, column2[0], player.iD - 1);
-                                            }
-                                            catch (Exception)
-                                            {
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Такой карты рецепта нет, выбери другую");
-                                                Console.WriteLine();
-                                                Console.ResetColor();
-                                            }
-                                            finally
-                                            {
-                                                column2 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column2);
-                                            }
+                                            TakeQuest(game, column2[0], player.iD - 1);
+                                            column2 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column2);
                                             continue;
                                         }
                                     case 3:
                                         {
-                                            try
-                                            {
-                                                TakeQuest(game, column3[0], player.iD - 1);
-                                            }
-                                            catch (Exception)
-                                            {
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Такой карты рецепта нет, выбери другую");
-                                                Console.WriteLine();
-                                                Console.ResetColor();
-                                            }
-                                            finally
-                                            {
-                                                column3 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column3);
-                                            }
+                                            TakeQuest(game, column3[0], player.iD - 1);
+                                            column3 = (Card[])ReplaceEmptyQuestCard(0, allCardsStack, ref column3);
                                             continue;
                                         }
                                 }
@@ -541,301 +522,174 @@ namespace PointSalad_App
                             case 2:
                                 Console.WriteLine("Введите карту первого овоща:");
                                 int command3;
+                                Card[] tempVegetablesMassive1 = new Card[6] { column1[1], column2[1], column3[1],
+                                                                             column1[2],column2[2],column3[2]};
                                 while (true)
                                 {
-                                    if (int.TryParse(Console.ReadLine(), out command3) & (command3 >= 1 & command3 <= 6))
+                                    if (int.TryParse(Console.ReadLine(), out command3) && command3 >= 1 && command3 <= 6 && tempVegetablesMassive1[command3 - 1] != null)
                                     {
                                         break;
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Неверный формат или такого овоща нет.");
+                                        ShowMessageRed("Неверный формат или такого овоща нет.");
                                     }
                                 }
-                                Console.WriteLine("Введите карту второго овоща:");
-                                int command4;
-                                while (true)
+                                switch (command3)
                                 {
-                                    if (int.TryParse(Console.ReadLine(), out command4) & (command4 >= 1 & command4 <= 6) & (command4 != command3))
-                                    {
+                                    case 1:
+                                        {
+                                            TakeVegetable(game, column1[1], player.iD - 1);
+                                            column1 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column1);
+                                        }
                                         break;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Неверный формат, взят два раза один и тот же овощ или такого овоща нет.");
-                                    }
+                                    case 2:
+                                        {
+                                            TakeVegetable(game, column2[1], player.iD - 1);
+                                            column2 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column2);
+                                        }
+                                        break;
+                                    case 3:
+                                        {
+                                            TakeVegetable(game, column3[1], player.iD - 1);
+                                            column3 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column3);
+                                        }
+                                        break;
+                                    case 4:
+                                        {
+                                            TakeVegetable(game, column1[2], player.iD - 1);
+                                            column1 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column1);
+                                        }
+                                        break;
+                                    case 5:
+                                        {
+                                            TakeVegetable(game, column2[2], player.iD - 1);
+                                            column2 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column2);
+                                        }
+                                        break;
+                                    case 6:
+                                        {
+                                            TakeVegetable(game, column3[2], player.iD - 1);
+                                            column3 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column3);
+                                        }
+                                        break;
                                 }
-                                    switch (command3)
-                                    {
-                                        case 1:
-                                            {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column1[1], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
-                                                column1 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column1);
-                                            }
-                                            break;
-                                        case 2:
-                                            {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column2[1], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
-                                                column2 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column2);
-                                            }
-                                            break;
-                                        case 3:
-                                            {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column3[1], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
-                                                column3 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column3);
-                                            }
-                                            break;
-                                        case 4:
-                                            {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column1[2], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
-                                                column1 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column1);
-                                            }
-                                            break;
-                                        case 5:
-                                            {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column2[2], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
-                                                column2 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column2);
-                                            }
-                                            break;
-                                        case 6:
-                                            {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column3[2], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
-                                                column3 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column3);
-                                            }
-                                            break;
-                                    }
-                                    #region Проверка - все карты закончились?
-                                    Card[] cardsInPlayPrePre = new Card[9];
 
-                                    for (int k = 0, i = 0; i <= 2; i++, k++)
+                                List<Card> cardsInGame = new List<Card>();
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    cardsInGame.Add(column1[i]);
+                                    cardsInGame.Add(column2[i]);
+                                    cardsInGame.Add(column3[i]);
+                                }
+
+                                if (CheckGameContinue(cardsInGame))
+                                {
+                                    Console.WriteLine("Введите карту второго овоща:");
+                                    int command4;
+                                    Card[] tempVegetablesMassive2 = new Card[6] { column1[1], column2[1], column3[1],
+                                                                             column1[2],column2[2],column3[2]};
+                                    while (true)
                                     {
-                                        cardsInPlayPrePre[k] = column1[i];
-                                        k++;
-                                        cardsInPlayPrePre[k] = column2[i];
-                                        k++;
-                                        cardsInPlayPrePre[k] = column3[i];
+                                        if (int.TryParse(Console.ReadLine(), out command4) && command4 >= 1 && command4 <= 6 && (tempVegetablesMassive2[command4 - 1] != null))
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            ShowMessageRed("Неверный формат или такого овоща нет.");
+                                        }
                                     }
-                                    bool isAlive2 = CheckGameContinue(cardsInPlayPrePre);
-                                    if (isAlive2)
-                                    {
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        alive = false;
-                                    }
-                                    #endregion
                                     switch (command4)
                                     {
                                         case 1:
                                             {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column1[1], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
+                                                TakeVegetable(game, column1[1], player.iD - 1);
                                                 column1 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column1);
                                             }
                                             break;
                                         case 2:
                                             {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column2[1], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
+                                                TakeVegetable(game, column2[1], player.iD - 1);
                                                 column2 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column2);
                                             }
                                             break;
                                         case 3:
                                             {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column3[1], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
+                                                TakeVegetable(game, column3[1], player.iD - 1);
                                                 column3 = (Card[])ReplaceEmptyVegetablesCard(1, allCardsStack, ref column3);
                                             }
                                             break;
                                         case 4:
                                             {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column1[2], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
+                                                TakeVegetable(game, column1[2], player.iD - 1);
                                                 column1 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column1);
                                             }
                                             break;
                                         case 5:
                                             {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column2[2], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
+                                                TakeVegetable(game, column2[2], player.iD - 1);
                                                 column2 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column2);
                                             }
                                             break;
                                         case 6:
                                             {
-                                                try
-                                                {
-                                                    TakeVegetable(game, column3[2], player.iD - 1);
-                                                }
-                                                catch
-                                                {
-                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                    Console.WriteLine("Такой карты овоща нет, выбери другую");
-                                                    Console.ResetColor();
-                                                    Console.WriteLine();
-                                                }
+                                                TakeVegetable(game, column3[2], player.iD - 1);
                                                 column3 = (Card[])ReplaceEmptyVegetablesCard(2, allCardsStack, ref column3);
                                             }
                                             break;
                                     }
+                                }
+                                else
+                                {
+                                    alive = false;
                                     break;
+                                }
+                                List<Card> tempCardsInGame = new List<Card>();
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    tempCardsInGame.Add(column1[i]);
+                                    tempCardsInGame.Add(column2[i]);
+                                    tempCardsInGame.Add(column3[i]);
+                                }
+                                if (CheckGameContinue(tempCardsInGame)) break;
+                                else
+                                {
+                                    alive = false;
+                                    break;
+                                }
                             case 3:
-                                goto Scoring;
+                                alive = false;
+                                break;
                         }
-                        #region Проверка - все карты закончились?
-                        Card[] cardsInPlayPre = new Card[9];
-
-                        for (int k = 0, i = 0; i <= 2; i++, k++)
-                        {
-                            cardsInPlayPre[k] = column1[i];
-                            k++;
-                            cardsInPlayPre[k] = column2[i];
-                            k++;
-                            cardsInPlayPre[k] = column3[i];
-                        }
-                        bool isAlive1 = CheckGameContinue(cardsInPlayPre);
-                        if (isAlive1)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            alive = false;
-                        }
-                        #endregion
                     }
                     catch (Exception ex)
                     {
-                        // выводим сообщение об ошибке красным цветом
-                        color = Console.ForegroundColor;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine(ex.Message);
-                        Console.ForegroundColor = color;
+                        ShowMessageRed(ex.Message);
                     }
                 }
                 if (alive)
-                    game.roundCounter ++;
-                    goto restart;
+                    game.roundCounter++;
+                goto restart;
+            }
+            else 
+            {
+                //Scoring:
+                //Подсчет очков
+                Console.WriteLine("КОНЕЦ ИГРЫ!!!");
+                for (int i = 0; i <= game.players.Count - 1; i++)
+                {
+                    game.players[i].Score = 0;
+                    foreach (var card in game.players[i].QuestStack)
+                    {
+                        card.Quest(game, game.players[i]);
+                    }
+
+                    Console.WriteLine($"Игрок {i + 1} набрал {game.players[i].Score} очков.");
+                }
+                Console.ReadLine();
             }
 
-            Scoring:
-            //Подсчет очков
-            for (int i = 0; i <= game.players.Count - 1; i++)
-            {
-                game.players[i].Score = 0;
-                foreach (var card in game.players[i].QuestStack)
-                {
-                    card.Quest(game, game.players[i]);
-                }
-                Console.WriteLine($"Игрок {i+1} набрал {game.players[i].Score} очков.");
-            }
-            Console.ReadLine();
         }
     }
 }
