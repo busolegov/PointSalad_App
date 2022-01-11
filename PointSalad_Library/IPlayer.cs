@@ -16,6 +16,8 @@ namespace PointSalad_Library
         /// </summary>
         /// <param name="card"></param>
         void TakeQuest(Card card);
+
+
         /// <summary>
         /// Метод вязтия карты овоща.
         /// </summary>

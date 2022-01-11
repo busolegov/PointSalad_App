@@ -370,6 +370,7 @@ namespace PointSalad_App
             }
 
             bool alive = true;
+
         restart:
             if (alive)
             {

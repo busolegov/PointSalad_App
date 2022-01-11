@@ -8,6 +8,13 @@ namespace PointSalad_Library
 {
     public class Player : IPlayer
     {
+        public int iD;
+        static int counter = 0;
+        public Player()
+        {
+            iD = ++counter;
+        }
+
         /// <summary>
         /// Событие, возникающее присоздании игрока.
         /// </summary>
@@ -31,7 +38,6 @@ namespace PointSalad_Library
         public void CallEvent(AccountEventArgs e, AccountStateHandler handler)
         {
             if (e != null) handler?.Invoke(this, e);
-
         }
 
         /// <summary>
@@ -110,12 +116,6 @@ namespace PointSalad_Library
             OnHasTakenQuest(new AccountEventArgs("В стек рецептов добавлена карта " + card.QuestText + "\n--------------------", card));
         }
 
-        public int iD;
-        static int counter = 0;
-        public Player()
-        {
-            iD = ++counter;
-        }
 
         /// <summary>
         /// Общее Количество очков игрока.
